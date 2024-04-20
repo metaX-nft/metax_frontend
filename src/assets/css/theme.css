@@ -1,27 +1,5 @@
 @layer base {
   :root {
-    --color-highlight: 176 77 255;
-
-    --color-bg-main: 27 27 36;
-    --color-bg-muted: 25 25 33;
-    --color-bg-invert: 0 0 0;
-
-    --color-prospect-main: 34 34 46;
-    --color-prospect-muted: 43 43 61;
-    --color-prospect-invert: 61 61 84;
-
-    --color-border-main: 67 67 87;
-
-    --color-text-main: 255 255 255;
-    --color-input-main:rgba(255,255,255,0.5);
-
-    --color-success: 4 236 174;
-    --color-warn: 206 117 9;
-    --color-danger: 232 76 105;
-
-    --color-gradient-from: 191 112 255;
-    --color-gradient-to: 200 21 255;
-
     --max-width: 93rem;
     --max-width2: 64rem;
     --max-width3: 68rem;
@@ -44,12 +22,7 @@
     --color-bg-muted: 25 25 33;
     --color-bg-invert: 0 0 0;
 
-    --color-prospect-main: 34 34 46;
-    --color-prospect-muted: 43 43 61;
-    --color-prospect-invert: 61 61 84;
-
     --color-border-main: 67 67 87;
-
     --color-text-main: 0 0 0;
 
     --color-success: #04ecae
@@ -64,12 +37,7 @@
     --color-bg-muted: 25 25 33;
     --color-bg-invert: 0 0 0;
 
-    --color-prospect-main: 34 34 46;
-    --color-prospect-muted: 43 43 61;
-    --color-prospect-invert: 61 61 84;
-
     --color-border-main: 67 67 87;
-
     --color-text-main: 255 255 255;
 
     --color-success: #04ecae
