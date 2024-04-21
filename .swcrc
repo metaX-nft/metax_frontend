@@ -6,7 +6,9 @@
   "jsc": {
     "parser": {
       "syntax": "typescript",
+      "privateMethod": true,
       "dynamicImport": true,
+      "classPrivateProperty": true,
       "decorators": true,
       "tsx": true
     },
@@ -23,5 +25,6 @@
     "loose": true,
     "externalHelpers": true,
     "keepClassNames": false
-  }
+  },
+  "isModule": true
 }
