@@ -13,7 +13,7 @@ const App = () => {
   const colorMode = useMemo(
     () => ({
       toggleColorMode: () => {
-        setMode((prevMode:string) => (prevMode === 'light' ? 'dark' : 'light'));
+        setMode((prevMode: string) => (prevMode === 'light' ? 'dark' : 'light'));
       },
     }),
     [],

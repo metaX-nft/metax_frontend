@@ -1,8 +1,7 @@
-
-import {  Suspense } from 'react';
+import { Suspense } from 'react';
 import { Navigate, RouteObject } from 'react-router-dom';
 import MainLayout from '@pages/MainLayout';
-import Home from '@pages/Home'
+import Home from '@pages/Home';
 
 const Layout = () => (
   <Suspense>

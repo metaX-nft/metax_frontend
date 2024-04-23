@@ -4,12 +4,14 @@ import './style.css';
 
 import App from '@pages/App';
 
-const container = document.getElementById('app')!;
+const container = document.getElementById('app');
 
-const root = createRoot(container);
+if (container) {
+  const root = createRoot(container);
 
-root.render(
+  root.render(
     <BrowserRouter>
       <App />
-    </BrowserRouter>
-);
+    </BrowserRouter>,
+  );
+}

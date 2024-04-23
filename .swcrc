@@ -1,16 +1,21 @@
 {
-  "module": {
-    "type": "es6",
-    "ignoreDynamic": true
-  },
   "jsc": {
     "parser": {
       "syntax": "typescript",
-      "privateMethod": true,
+      "jsx": true,
       "dynamicImport": true,
-      "classPrivateProperty": true,
+      "tsx": true,
+      "privateMethod": true,
+      "functionBind": true,
+      "exportDefaultFrom": true,
+      "exportNamespaceFrom": true,
       "decorators": true,
-      "tsx": true
+      "decoratorsBeforeExport": true,
+      "topLevelAwait": true,
+      "importMeta": true,
+      "privateFieldsAsProperties": true,
+      "classPrivateProperty": true,
+      "classProperty": true
     },
     "transform": {
       "legacyDecorator": true,
@@ -21,10 +26,9 @@
         "useBuiltins": true
       }
     },
-    "target": "es2015",
-    "loose": true,
-    "externalHelpers": true,
-    "keepClassNames": false
+    "target": "es2022"
   },
-  "isModule": true
+  "module": {
+    "type": "es6"
+  }
 }
