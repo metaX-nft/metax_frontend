@@ -1,7 +1,7 @@
 const { join, resolve } = require('path');
-const FriendlyErrorsWebpackPlugin = require('@soda/friendly-errors-webpack-plugin');
+// const FriendlyErrorsWebpackPlugin = require('@soda/friendly-errors-webpack-plugin');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
-const notifier = require('node-notifier');
+// const notifier = require('node-notifier');
 
 module.exports = {
   devServer: {
@@ -27,23 +27,23 @@ module.exports = {
       filename: 'index.html',
       template: resolve(__dirname, '../src/index.html'),
     }),
-    new FriendlyErrorsWebpackPlugin({
-      compilationSuccessInfo: {
-        messages: ['You application is running here http://localhost:3000'],
-        notes: ['💊 构建信息请及时关注窗口右上角'],
-      },
-      onErrors: function (severity, errors) {
-        if (severity !== 'error') {
-          return;
-        }
-        const error = errors[0];
-        notifier.notify({
-          title: '👒 Webpack构建失败',
-          message: severity + ': ' + error.name,
-          subtitle: error.file || '',
-        });
-      },
-      clearConsole: true,
-    }),
+    // new FriendlyErrorsWebpackPlugin({
+    //   compilationSuccessInfo: {
+    //     messages: ['You application is running here http://localhost:3000'],
+    //     notes: ['💊 构建信息请及时关注窗口右上角'],
+    //   },
+    //   onErrors: function (severity, errors) {
+    //     if (severity !== 'error') {
+    //       return;
+    //     }
+    //     const error = errors[0];
+    //     notifier.notify({
+    //       title: '👒 Webpack构建失败',
+    //       message: severity + ': ' + error.name,
+    //       subtitle: error.file || '',
+    //     });
+    //   },
+    //   clearConsole: true,
+    // }),
   ],
 };

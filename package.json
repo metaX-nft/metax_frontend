@@ -25,16 +25,21 @@
     "jotai": "^2.5.0",
     "jotai-immer": "^0.2.0",
     "react": "^18.2.0",
+    "react-copy-to-clipboard": "^5.1.0",
     "react-dom": "^18.2.0",
+    "react-jazzicon": "^1.0.4",
     "react-router-dom": "^6.22.3",
+    "tailwindcss": "^3.4.3",
     "webpack": "^5.89.0",
-    "webpack-cli": "^5.1.4"
+    "webpack-cli": "^5.1.4",
+    "zustand": "^4.5.2"
   },
   "devDependencies": {
     "@soda/friendly-errors-webpack-plugin": "^1.8.1",
     "@swc/core": "^1.4.16",
     "@swc/helpers": "^0.5.3",
     "@types/react": "^18.2.34",
+    "@types/react-copy-to-clipboard": "^5.0.7",
     "@types/react-dom": "^18.2.14",
     "@typescript-eslint/eslint-plugin": "^6.11.0",
     "@typescript-eslint/parser": "^6.11.0",
@@ -54,7 +59,6 @@
     "postcss-preset-env": "^9.3.0",
     "prettier": "^3.1.0",
     "swc-loader": "^0.2.6",
-    "tailwindcss": "^3.3.5",
     "webpack-dev-server": "^4.15.1",
     "yargs-parser": "^21.1.1"
   }

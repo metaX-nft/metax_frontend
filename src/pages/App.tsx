@@ -1,40 +1,29 @@
-import { createContext, useMemo, useState } from 'react';
+import { useMemo } from 'react';
 import { useRoutes } from 'react-router-dom';
+
 import routes from '../routes/index';
-
+import globalStore from '@states/global';
 import { createTheme, StyledEngineProvider, ThemeProvider } from '@mui/material/styles';
-
-const ColorModeContext = createContext({ toggleColorMode: () => {} });
 
 const App = () => {
   const routing = useRoutes(routes);
-  const [mode, setMode] = useState<'light' | 'dark'>('dark');
 
-  const colorMode = useMemo(
-    () => ({
-      toggleColorMode: () => {
-        setMode((prevMode: string) => (prevMode === 'light' ? 'dark' : 'light'));
-      },
-    }),
-    [],
-  );
+  const themeMode = globalStore(state => state.themeMode);
 
   const theme = useMemo(
     () =>
       createTheme({
         palette: {
-          mode,
+          mode: themeMode,
         },
       }),
-    [mode],
+    [themeMode],
   );
 
   return (
     <>
       <StyledEngineProvider injectFirst>
-        <ColorModeContext.Provider value={colorMode}>
-          <ThemeProvider theme={theme}>{routing}</ThemeProvider>
-        </ColorModeContext.Provider>
+        <ThemeProvider theme={theme}>{routing}</ThemeProvider>
       </StyledEngineProvider>
     </>
   );
