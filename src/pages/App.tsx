@@ -1,6 +1,5 @@
 import { useMemo } from 'react';
 import { useRoutes } from 'react-router-dom';
-
 import routes from '../routes/index';
 import globalStore from '@states/global';
 import { createTheme, StyledEngineProvider, ThemeProvider } from '@mui/material/styles';
@@ -15,6 +14,14 @@ const App = () => {
       createTheme({
         palette: {
           mode: themeMode,
+          primary: {
+            main: '#3EE19E',
+            contrastText: '#fff',
+          },
+          secondary: {
+            main: '#8BFBA7',
+            contrastText: '#000',
+          },
         },
       }),
     [themeMode],

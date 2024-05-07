@@ -1,6 +1,6 @@
 import * as React from 'react';
 
 const Galley = React.memo(() => {
-  return <div>Galley</div>;
+  return <div className="w-auto h-auto">Galley</div>;
 });
 export default Galley;

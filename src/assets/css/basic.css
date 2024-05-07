@@ -246,3 +246,8 @@ body {
 .font-variant-numeric {
   font-variant-numeric: tabular-nums lining-nums;
 }
+
+.mainBody {
+  width: 100%;
+  height: calc(100vh - 2.5rem) !important;
+}

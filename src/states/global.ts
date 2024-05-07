@@ -1,7 +1,7 @@
 import { create } from 'zustand';
 
 type GlobalType = {
-  user: { signer?: string; chainId?: string; accounts?: string };
+  user: { signer?: string; chainId?: string; accounts?: string; xAccount?: string };
   themeMode: 'light' | 'dark';
 };
 
@@ -9,13 +9,15 @@ type NewUserType = { [key in keyof GlobalType['user']]: any };
 
 type GlobalAction = {
   updateUser: (newData: NewUserType) => void;
+  resetUser: () => void;
   toggleColorMode: () => void;
 };
 
 const globalStore = create<GlobalType & GlobalAction>()(set => ({
   user: {},
-  themeMode: 'light',
+  themeMode: 'dark',
   updateUser: newData => set(state => ({ user: { ...state.user, ...newData } })),
+  resetUser: () => set(() => ({})),
   toggleColorMode: () =>
     set(state => ({ themeMode: state.themeMode === 'light' ? 'dark' : 'light' })),
 }));

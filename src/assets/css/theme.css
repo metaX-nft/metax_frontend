@@ -1,5 +1,27 @@
 @layer base {
   :root {
+    --color-highlight: 139 251 167;
+    --color-primary: 71 228 159;
+    --color-bg-main: 9 17 15;
+    --color-bg-muted: 25 25 33;
+    --color-bg-invert: 0 0 0;
+
+    --color-prospect-main: 34 34 46;
+    --color-prospect-muted: 43 43 61;
+    --color-prospect-invert: 61 61 84;
+
+    --color-border-main: 67 67 87;
+
+    --color-text-main: 255 255 255;
+    --color-input-main: rgba(255, 255, 255, 0.5);
+
+    --color-success: 4 236 174;
+    --color-warn: 206 117 9;
+    --color-danger: 232 76 105;
+
+    --color-gradient-from: 71 228 159;
+    --color-gradient-to: 139 251 167;
+
     --max-width: 93rem;
     --max-width2: 64rem;
     --max-width3: 68rem;
@@ -16,16 +38,15 @@
   }
 
   .theme-light {
-    --color-highlight:  245 228 0;
-
-    --color-bg-main: 255 255 255;
+    --color-highlight: 245 228 0;
+    --color-bg-main: 9 17 15;
     --color-bg-muted: 25 25 33;
     --color-bg-invert: 0 0 0;
 
     --color-border-main: 67 67 87;
     --color-text-main: 0 0 0;
 
-    --color-success: #04ecae
+    --color-success: #04ecae;
     --color-warn: #ce7509;
     --color-danger: #e84c69;
   }
@@ -33,14 +54,14 @@
   .theme-dark {
     --color-highlight: 0 163 245;
 
-    --color-bg-main: 27 27 36;
+    --color-bg-main: 9 17 15;
     --color-bg-muted: 25 25 33;
     --color-bg-invert: 0 0 0;
 
     --color-border-main: 67 67 87;
     --color-text-main: 255 255 255;
 
-    --color-success: #04ecae
+    --color-success: #04ecae;
     --color-warn: #ce7509;
     --color-danger: #e84c69;
   }

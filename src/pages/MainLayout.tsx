@@ -1,15 +1,21 @@
-import * as React from 'react';
 import Nav from '@components/Nav';
-import { Outlet } from 'react-router-dom';
+import { Navigate, Outlet } from 'react-router-dom';
+// import globalStore from '@states/global';
 
-const MainLayout = () => {
+const ContentLayout = () => {
+  // const user = globalStore(state => state.user);
+
+  // if (!user.xAccount) {
+  //   return <Navigate to="/login" />;
+  // }
+
   return (
-    <div className="app">
+    <>
       <Nav />
-      <div className="relative text-[1rem]">
+      <div className="relative text-[1rem] mainBody">
         <Outlet />
       </div>
-    </div>
+    </>
   );
 };
-export default React.memo(MainLayout);
+export default ContentLayout;

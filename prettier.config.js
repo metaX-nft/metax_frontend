@@ -7,4 +7,5 @@ module.exports = {
   TrailingComma: 'all',
   bracketSpacing: true,
   arrowParens: 'avoid',
+  tailwindConfig: './tailwind.config.js',
 };
