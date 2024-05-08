@@ -36,6 +36,9 @@ export const theme = {
       view2: 'var(--max-width2)',
       view3: 'var(--max-width3)',
     },
+    screen: {
+      desktop: '1280px',
+    },
   },
 };
 

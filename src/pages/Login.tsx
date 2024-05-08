@@ -6,37 +6,39 @@ import { ArrowRightAlt } from '@mui/icons-material';
 
 const LoginPage = () => {
   return (
-    <div className="bg-main relative h-screen overflow-hidden">
-      <div className="mt-10 ml-44 inline-block">
-        <Logo />
-      </div>
-      <div
-        className="absolute -left-60 bottom-10 backdrop-blur-md w-[400px]  h-[400px] rounded-full"
-        style={{
-          background: 'radial-gradient(rgba(22, 212, 153, 0.5), transparent)',
-          filter: 'blur(200px)',
-        }}
-      ></div>
-      <div
-        className="absolute -right-60 top-10 w-[400px]  h-[400px] rounded-full"
-        style={{
-          background: 'radial-gradient(rgba(22, 212, 153, 0.5), transparent)',
-          filter: 'blur(200px)',
-        }}
-      ></div>
-      <div className="text-center mt-20">
-        <p className="text-white text-5xl font-bold text-center ">
-          Empower digital asset <span className="text-primary">with X</span>
-        </p>
-        <a
-          href="http://3.27.65.65:3000/api/v2/user/login"
-          className="flex w-[266px] h-[72px] mt-10 mx-auto rounded-full font-normal bg-gradient-to-r from-gradient-from to-gradient-to text-xl items-center justify-center hover:from-gradient-to hover:to-gradient-to transition-all hover:transition-all"
-        >
-          <span className="mr-5">Connect X</span>
-          <ArrowRightAlt />
-        </a>
-        <img className="mt-10 mx-auto relative z-10" src={LoginMid} />
-        <img className="absolute xl:-bottom-7 bottom-0" src={LoginBg} />
+    <div className="bg-main overflow-hidden ">
+      <div className="min-h-screen relative">
+        <div className="mt-10 ml-44 inline-block">
+          <Logo />
+        </div>
+        <div
+          className="absolute -left-[25rem] bottom-10 backdrop-blur-md w-[35rem]  h-[35rem] rounded-full"
+          style={{
+            background: 'radial-gradient(circle at center,rgba(22, 212, 153, 0.5), transparent)',
+            filter: 'blur(200px)',
+          }}
+        ></div>
+        <div
+          className="absolute -right-[25rem] top-10 w-[35rem]  h-[35rem] rounded-full"
+          style={{
+            background: 'radial-gradient(circle at center,rgba(22, 212, 153, 0.5), transparent)',
+            filter: 'blur(200px)',
+          }}
+        ></div>
+        <div className="text-center mt-20 lg:pb-12 desktop:pb-0 relative z-10">
+          <p className="text-white text-5xl font-bold text-center ">
+            Empower digital asset <span className="text-primary">with X</span>
+          </p>
+          <a
+            href="http://3.27.65.65:3000/api/v2/user/login"
+            className="flex w-[266px] h-[72px] mt-10 mx-auto rounded-full font-normal bg-gradient-to-r from-gradient-from to-gradient-to text-xl items-center justify-center hover:from-gradient-to hover:to-gradient-to transition-all hover:transition-all"
+          >
+            <span className="mr-5">Connect X</span>
+            <ArrowRightAlt />
+          </a>
+          <img className="mt-8 mx-auto relative z-10 w-[44rem]" src={LoginMid} />
+        </div>
+        <img className="absolute bottom-0 w-screen left-[2px]" src={LoginBg} />
       </div>
     </div>
   );
