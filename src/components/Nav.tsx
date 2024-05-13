@@ -24,7 +24,7 @@ export default function Nav() {
   }, [account]);
 
   return (
-    <div className="flex items-center p-1 h-10">
+    <div className="flex items-center p-1 h-[100px]">
       <div className="logo w-60">logo</div>
       <div className="menu flex-1 grow mx-1 items-center flex justify-between">
         <Link to="/galley">

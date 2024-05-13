@@ -2,7 +2,7 @@ import { Suspense } from 'react';
 import { Navigate, RouteObject } from 'react-router-dom';
 import MainLayout from '@pages/MainLayout';
 import LoginPage from '@pages/Login';
-import Galley from '@pages/Galley';
+import Galley from '@pages/Galley/index';
 import Winjoy from '@pages/Winjoy';
 import Vault from '@pages/Vault';
 import Ranking from '@pages/Ranking';

@@ -4935,6 +4935,11 @@ postcss-pseudo-class-any-link@^9.0.1:
   dependencies:
     postcss-selector-parser "^6.0.13"
 
+postcss-pxtorem@^6.1.0:
+  version "6.1.0"
+  resolved "https://registry.npmjs.org/postcss-pxtorem/-/postcss-pxtorem-6.1.0.tgz#7e6410e30426adef53bad6c4c5f00cd5f586937c"
+  integrity sha512-ROODSNci9ADal3zUcPHOF/K83TiCgNSPXQFSbwyPHNV8ioHIE4SaC+FPOufd8jsr5jV2uIz29v1Uqy1c4ov42g==
+
 postcss-reduce-initial@^6.1.0:
   version "6.1.0"
   resolved "https://registry.npmjs.org/postcss-reduce-initial/-/postcss-reduce-initial-6.1.0.tgz#4401297d8e35cb6e92c8e9586963e267105586ba"

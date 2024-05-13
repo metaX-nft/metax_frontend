@@ -249,5 +249,5 @@ body {
 
 .mainBody {
   width: 100%;
-  height: calc(100vh - 2.5rem) !important;
+  height: calc(100vh - 100px) !important;
 }
