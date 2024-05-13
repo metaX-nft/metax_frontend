@@ -2,6 +2,7 @@ import * as React from 'react'
 
 import XThumb from '@assets/images/x-thumb.svg'
 import NFT from '@assets/images/nft.png'
+import GalleyPoints from '@assets/images/galley-points.svg'
 
 const XContent = React.memo(() => {
     const XData = [
@@ -30,20 +31,22 @@ const NFTbody = React.memo(() => {
         <>
             <div className='mt-[67px] w-[529px] h-[551px] relative'>
                 <div className='absolute top-[47px] left-[20px] flex'>
-                    <div className='relative text-center mr-[20px]'>
+                    <div className='h-[26px] w-[116px] relative text-center mr-[20px]'>
                         <span className='absolute left-[58px] text-white z-[20] translate-x-[-50%]'>30/120</span>
                         {/* level */}
-                        <div className='min-w-[26px] h-[26px] absolute left-0 top-0 z-[15] rounded-[13px] border-[2px] border-[#3EE19E] text-center text-[14px]'>21</div>
+                        <div className='min-w-[26px] h-[26px] absolute left-0 top-0 z-[15] rounded-[13px] border-[2px]  border-[#00873F] bg-[#3EE19E]  text-center text-[14px]'>21</div>
                         {/* current expr */}
                         <div className='h-[26px] w-[52px] absolute left-0 top-0 z-[10] rounded-[20px] bg-[#0A4430]'></div>
                         {/* need expr */}
                         <div className='h-[26px] w-[116px] absolute left-0 top-0 z-[5] rounded-[20px] bg-[#063122]'></div>
                     </div>
 
-                    <div className='relative text-center'>
+                    <div className='h-[26px] w-[116px] relative text-center'>
                         <span className='absolute left-[58px] text-white z-[20] translate-x-[-50%]'>30/120</span>
                         {/* level */}
-                        <div className='min-w-[26px] h-[26px] absolute left-0 top-0 z-[15] rounded-[13px] border-[2px] border-[#3EE19E] text-center text-[14px]'>21</div>
+                        <div className='min-w-[26px] h-[26px] absolute flex left-0 top-0 z-[15] rounded-[13px] border-[2px] border-[#00873F] bg-[#3EE19E] text-center text-[14px]'>
+                            <img src={GalleyPoints}/>
+                        </div>
                         {/* current expr */}
                         <div className='h-[26px] w-[52px] absolute left-0 top-0 z-[10] rounded-[20px] bg-[#0A4430]'></div>
                         {/* need expr */}
