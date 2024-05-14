@@ -135,7 +135,7 @@ const SecondPage = React.memo(({ onSetActivePage }: PageAction) => {
 })
 
 const Galley = React.memo(() => {
-    const [activePage, setActivePage] = React.useState('2')
+    const [activePage, setActivePage] = React.useState('1')
 
     return activePage === '1' ? (
         <FirstPage onSetActivePage={setActivePage} />
