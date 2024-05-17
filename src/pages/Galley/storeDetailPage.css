@@ -1,0 +1,7 @@
+.list-item {
+  @apply px-[20px] text-white text-[18px] text-left leading-[24px];
+}
+
+.list-item::marker {
+  content: '';
+}
