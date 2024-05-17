@@ -143,9 +143,14 @@ const SecondPage = React.memo(() => {
 
 const Galley = React.memo(() => {
   const [activePage, setActivePage] = useAtom(activePageAtom);
+  React.useEffect(() => {
+    if (activePage !== '1') {
+      setActivePage('1');
+    }
+  }, []);
 
   return activePage === '1' ? (
-    <FirstPage onSetActivePage={setActivePage} />
+    <FirstPage />
   ) : activePage === '2' ? (
     <SecondPage />
   ) : (

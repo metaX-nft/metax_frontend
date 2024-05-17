@@ -3,7 +3,7 @@ import { useAtom } from 'jotai';
 import { Button, InputBase } from '@mui/material';
 import { KeyboardBackspace } from '@mui/icons-material';
 
-import { activePageAtom } from './index';
+import { activePageAtom } from '../index';
 import StoreListBg from '@assets/images/store-list-bg.png';
 import StoreIcon from '@assets/images/store-icon.svg';
 
@@ -13,7 +13,7 @@ import CandyIcon from '@assets/images/candy.png';
 import Biscult from '@assets/images/biscult.png';
 import PowerIcon from '@assets/images/power.png';
 
-import './storeDetailPage.css';
+import './index.css';
 
 function StoreDetailListItem({ row, index, data }) {
   const { picture, name, price, feature, totalPrice } = row;
