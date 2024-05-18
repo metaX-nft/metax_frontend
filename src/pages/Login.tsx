@@ -30,7 +30,7 @@ const LoginPage = () => {
             Empower digital asset <span className="text-primary">with X</span>
           </p>
           <a
-            href="http://3.27.65.65:3000/api/v2/user/login"
+            href="http://www.metax-nft.com:3000/auth/twitter"
             className="flex w-[266px] h-[72px] mt-10 mx-auto rounded-full font-normal bg-gradient-to-r from-gradient-from to-gradient-to text-xl items-center justify-center hover:from-gradient-to hover:to-gradient-to transition-all hover:transition-all"
           >
             <span className="mr-5">Connect X</span>

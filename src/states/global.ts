@@ -1,7 +1,13 @@
 import { create } from 'zustand';
 
 type GlobalType = {
-  user: { signer?: string; chainId?: string; accounts?: string; xAccount?: string };
+  user: {
+    signer?: string;
+    chainId?: string;
+    address?: string;
+    xAccount?: string;
+    xAvatar?: string;
+  };
   themeMode: 'light' | 'dark';
 };
 
