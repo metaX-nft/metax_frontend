@@ -1215,6 +1215,13 @@
   resolved "https://registry.npmjs.org/@remix-run/router/-/router-1.15.3.tgz#d2509048d69dbb72d5389a14945339f1430b2d3c"
   integrity sha512-Oy8rmScVrVxWZVOpEF57ovlnhpZ8CCPlnIIumVcV9nFdiSIrus99+Lw78ekXyGvVDlIsFJbSfmSovJUhCWYV3w==
 
+"@rumess/react-flip-countdown@^1.2.6":
+  version "1.2.6"
+  resolved "https://registry.yarnpkg.com/@rumess/react-flip-countdown/-/react-flip-countdown-1.2.6.tgz#2348ca56ce3071bc31f127517af6c60f57a25c20"
+  integrity sha512-M60wPi6jDFurwwUQNG20UBXOmu/6z/Zs+X1r9eXRiFIDsRudEVkwuTbzpJNDO6H6pKVtrOatQ5HD4nweoW5PHQ==
+  dependencies:
+    moment "^2.26.0"
+
 "@safe-global/safe-apps-provider@0.18.1":
   version "0.18.1"
   resolved "https://registry.npmjs.org/@safe-global/safe-apps-provider/-/safe-apps-provider-0.18.1.tgz#287b5a1e2ef3be630dacde54279409df3ced8202"
@@ -5671,6 +5678,11 @@ mlly@^1.6.1, mlly@^1.7.0:
     pathe "^1.1.2"
     pkg-types "^1.1.0"
     ufo "^1.5.3"
+
+moment@^2.26.0, moment@^2.30.1:
+  version "2.30.1"
+  resolved "https://registry.yarnpkg.com/moment/-/moment-2.30.1.tgz#f8c91c07b7a786e30c59926df530b4eac96974ae"
+  integrity sha512-uEmtNhbDOrWPFS+hdjFCBfy9f2YoyzRpwcl+DqpC6taX21FzsTLQVbMV/W7PzNSX6x/bhC1zA3c2UQ5NzH6how==
 
 motion@10.16.2:
   version "10.16.2"

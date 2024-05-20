@@ -6,7 +6,7 @@ import Galley from '@pages/Galley/index';
 import Winjoy from '@pages/Winjoy';
 import Vault from '@pages/Vault';
 import Ranking from '@pages/Ranking';
-
+import Demo from '@pages/Demo';
 const Routes: RouteObject[] = [
   {
     path: '/',
@@ -20,6 +20,7 @@ const Routes: RouteObject[] = [
       { path: 'Stake', element: <Vault /> },
       { path: 'winjoy', element: <Winjoy /> },
       { path: 'ranking', element: <Ranking /> },
+      { path: 'demo', element: <Demo /> },
       {
         index: true,
         element: <Navigate to="/galley" replace />,

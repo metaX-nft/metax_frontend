@@ -251,3 +251,32 @@ body {
   width: 100%;
   height: calc(100vh - 100px) !important;
 }
+
+.flip-countdown.theme-light {
+  --text-color: #134631 !important;
+  --text-bottom-color: #134631 !important;
+  --background-color: #47e49fb2 !important;
+  --background-bottom-color: #47e49f !important;
+}
+
+.flip-countdown-piece {
+  margin-right: 60px !important;
+
+  &:last-of-type {
+    margin-right: 0px !important;
+  }
+}
+
+.flip-countdown .flip-countdown-piece .flip-countdown-card .flip-countdown-card-sec .card__top,
+.flip-countdown .flip-countdown-piece .flip-countdown-card .flip-countdown-card-sec .card__bottom {
+  padding: 0px 7px !important;
+}
+
+.flip-countdown-title {
+  font-size: 16px !important;
+  lineheight: 19px !important;
+  color: #fff !important;
+  margin-top: 21px !important;
+  display: inline-block !important;
+  font-weight: 400 !important;
+}
