@@ -82,8 +82,8 @@ export default function Account() {
         anchorOrigin={{ horizontal: 'right', vertical: 'bottom' }}
       >
         {isConnected ? (
-          <>
-            <MenuItem>
+          [
+            <MenuItem key="account">
               <ListItemIcon>
                 {ensAvatar ? (
                   <img
@@ -101,15 +101,15 @@ export default function Account() {
                   <ContentCopy />
                 </CopyToClipboard>
               </ListItemIcon>
-            </MenuItem>
-            <Divider />
-            <MenuItem onClick={handleDisconnect}>
+            </MenuItem>,
+            <Divider key="divider" />,
+            <MenuItem key="discount" onClick={handleDisconnect}>
               <ListItemIcon>
                 <Logout></Logout>
               </ListItemIcon>
               <ListItemText>Disconnect</ListItemText>
-            </MenuItem>
-          </>
+            </MenuItem>,
+          ]
         ) : (
           <MenuItem>
             <ConnectorWallect />

@@ -962,6 +962,19 @@
   dependencies:
     "@babel/runtime" "^7.23.9"
 
+"@mui/lab@^5.0.0-alpha.170":
+  version "5.0.0-alpha.170"
+  resolved "https://registry.npmjs.org/@mui/lab/-/lab-5.0.0-alpha.170.tgz#4519dfc8d1c51ca54fb9d8b91b95a3733d07be16"
+  integrity sha512-0bDVECGmrNjd3+bLdcLiwYZ0O4HP5j5WSQm5DV6iA/Z9kr8O6AnvZ1bv9ImQbbX7Gj3pX4o43EKwCutj3EQxQg==
+  dependencies:
+    "@babel/runtime" "^7.23.9"
+    "@mui/base" "5.0.0-beta.40"
+    "@mui/system" "^5.15.15"
+    "@mui/types" "^7.2.14"
+    "@mui/utils" "^5.15.14"
+    clsx "^2.1.0"
+    prop-types "^15.8.1"
+
 "@mui/material@^5.15.15":
   version "5.15.15"
   resolved "https://registry.npmjs.org/@mui/material/-/material-5.15.15.tgz#e3ba35f50b510aa677cec3261abddc2db7b20b59"
@@ -8423,6 +8436,7 @@ wildcard@^2.0.0:
   integrity sha512-CC1bOL87PIWSBhDcTrdeLo6eGT7mCFtrg0uIJtqJUFyK+eJnzl8A1niH56uu7KMa5XFrtiV+AQuHO3n7DsHnLQ==
 
 "wrap-ansi-cjs@npm:wrap-ansi@^7.0.0", wrap-ansi@^7.0.0:
+  name wrap-ansi-cjs
   version "7.0.0"
   resolved "https://registry.npmjs.org/wrap-ansi/-/wrap-ansi-7.0.0.tgz#67e145cff510a6a6984bdf1152911d69d2eb9e43"
   integrity sha512-YVGIj2kamLSTxw6NsZjoBxfSwsn0ycdesmc4p+Q21c5zPuZ1pl+NfxVdxPtdHvmNVOQ6XSYG4AUtyt/Fi7D16Q==

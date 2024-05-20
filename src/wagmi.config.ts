@@ -7,6 +7,7 @@ export const config = createConfig({
   transports: {
     [sepolia.id]: http(),
     [mainnet.id]: http(),
+    [5777]: http('http://127.0.0.1:7545'),
   },
   connectors: [metaMask()],
 });

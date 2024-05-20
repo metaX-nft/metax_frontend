@@ -1,16 +1,15 @@
 import { useState, useEffect } from 'react';
 import { Button } from '@mui/material';
 
-import { useChainId, useAccount, Connector, useConnect } from 'wagmi';
+import { useChainId, Connector, useConnect } from 'wagmi';
 import useMetaMask from '@hooks/useMetaMask';
 
 export default function ConnectorWallect() {
   const [ready, setReady] = useState(false);
 
   const { connect } = useConnect();
-  const { isConnected } = useAccount();
-
   const chainId = useChainId();
+
   const metamask: Connector = useMetaMask();
 
   useEffect(() => {
@@ -25,21 +24,25 @@ export default function ConnectorWallect() {
   if (!window.ethereum || !window.ethereum.isMetaMask) {
     return (
       <Button variant="text" href="https://home.metamask.io/" target="_blank">
-        安装 MetaMask
+        Install MetaMask
       </Button>
     );
   }
 
-  if (!isConnected && metamask) {
-    return (
-      <Button
-        variant="text"
-        disabled={!ready}
-        onClick={() => connect({ connector: metamask, chainId })}
-      >
-        连接钱包
-      </Button>
+  const handleConnectWallect = () => {
+    connect(
+      { connector: metamask, chainId },
+      {
+        onError(error, variables, context) {
+          console.log(error);
+        },
+      },
     );
-  }
-  return <></>;
+  };
+
+  return (
+    <Button variant="text" disabled={!ready} onClick={handleConnectWallect}>
+      Connect Wallect
+    </Button>
+  );
 }

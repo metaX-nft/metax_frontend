@@ -1,5 +1,4 @@
 import * as React from 'react';
-
 import TaskList from './TaskList';
 import NFTbody from './Nft';
 import Store from './Store';
