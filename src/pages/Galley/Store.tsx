@@ -15,7 +15,7 @@ const Store = React.memo(() => {
 
   return (
     <div
-      className="w-[412px] h-[290px] mt-[467px] bg-cover bg-no-repeat relative"
+      className="w-[412px] h-[290px] mt-[460px] bg-cover bg-no-repeat relative"
       style={{ backgroundImage: `url(${StoreBg})` }}
     >
       <img className="absolute w-[224px] h-[258px] left-[48px] top-[-98px]" src={StoreIcon} />

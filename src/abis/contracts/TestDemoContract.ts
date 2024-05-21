@@ -1,6 +1,6 @@
 import { useReadContract, useWriteContract, useWaitForTransactionReceipt } from 'wagmi';
 import type { WriteContractErrorType } from 'viem';
-import TestDemoAbi from './TesyDemoAbi';
+import TestDemoAbi from './TestDemoAbi';
 import { useCallback, useEffect, useState } from 'react';
 
 const contractAddress = '0xCe2eC9ADB7E6A12BaE1C46b5dCF85e7ec43145D6' as '0x${string}';

@@ -6,11 +6,30 @@ import Pagination from './Pagination';
 import StoreDetailPage from './StoreDetailPage';
 import NextPageIcon from '@assets/images/galley-nextpage.svg';
 import { atom, useAtom } from 'jotai';
+import { usePetId, useClaimFreePet, useGetPetInfo } from '@abis/contracts/mechPet/MechContract';
+import { BigNumber } from '@ethersproject/bignumber';
 
 export const activePageAtom = atom('1');
 
 const FirstPage = React.memo(() => {
   const [_, setActivePage] = useAtom(activePageAtom);
+
+  const { id: petId } = usePetId();
+
+  const { claimFreePet, error: claimError, isPending, isSuccess } = useClaimFreePet();
+
+  const petIdNumber = BigNumber.from(petId).toNumber();
+
+  console.log(petIdNumber);
+
+  // React.useEffect(() => {
+  //   if (petId) {
+  //     const petIdNumber = BigNumber.from(petId).toNumber();
+  //     if (petIdNumber <= 0) {
+  //       claimFreePet();
+  //     }
+  //   }
+  // }, [petId]);
 
   return (
     <div className="w-full h-full flex flex-col justify-center">
@@ -19,7 +38,7 @@ const FirstPage = React.memo(() => {
           <TaskList />
         </div>
         <div>
-          <NFTbody />
+          <NFTbody petId={petId} />
         </div>
         <div style={{ marginLeft: '7rem' }}>
           <Store />

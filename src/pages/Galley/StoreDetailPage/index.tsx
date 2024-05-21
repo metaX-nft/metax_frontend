@@ -1,4 +1,4 @@
-import { useState, useCallback, useRef } from 'react';
+import { useState, useCallback, useEffect } from 'react';
 import { useAtom } from 'jotai';
 import { Button, InputBase } from '@mui/material';
 import { KeyboardBackspace } from '@mui/icons-material';
@@ -16,8 +16,14 @@ import PowerIcon from '@assets/images/power.png';
 import './index.css';
 
 function StoreDetailListItem({ row, index, data }) {
-  const { picture, name, price, feature, totalPrice } = row;
-  const input = useRef<HTMLInputElement>(null);
+  const { picture, name, price, feature } = row;
+  const [totalPrice, setTotalPrice] = useState(0);
+  const [quantity, setQuantity] = useState(0);
+
+  useEffect(() => {
+    const allPrice = quantity * price;
+    setTotalPrice(allPrice);
+  }, [quantity]);
 
   return (
     <div
@@ -39,7 +45,15 @@ function StoreDetailListItem({ row, index, data }) {
       <span className="list-item">{price}</span>
       <span className="list-item">+{feature}</span>
       <span className="list-item">
-        <InputBase inputRef={input} inputProps={{ min: 0 }} defaultValue={0} type="number" />
+        <InputBase
+          inputProps={{ min: 0 }}
+          defaultValue={0}
+          type="number"
+          className="font-bold text-lg"
+          onChange={(e: React.ChangeEvent<HTMLInputElement>) => {
+            setQuantity(Number(e.target.value));
+          }}
+        />
       </span>
       <span className="list-item">{totalPrice}</span>
       <span className="list-item">
@@ -48,7 +62,7 @@ function StoreDetailListItem({ row, index, data }) {
           variant="contained"
           className="text-black rounded-full font-bold"
           onClick={() => {
-            console.log(input?.current?.value);
+            console.log(totalPrice);
           }}
         >
           buy
