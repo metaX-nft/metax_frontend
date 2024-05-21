@@ -268,7 +268,8 @@ body {
 }
 
 .flip-countdown .flip-countdown-piece .flip-countdown-card .flip-countdown-card-sec .card__top,
-.flip-countdown .flip-countdown-piece .flip-countdown-card .flip-countdown-card-sec .card__bottom {
+.flip-countdown .flip-countdown-piece .flip-countdown-card .flip-countdown-card-sec .card__bottom,
+.flip-countdown .flip-countdown-piece .flip-countdown-card .flip-countdown-card-sec .card__back::before {
   padding: 0px 7px !important;
 }
 
