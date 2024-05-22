@@ -39,21 +39,21 @@ const TaskList = React.memo(() => {
   const task = [
     {
       icon: TaskItemImg,
-      title: 'Follow @chainlink',
+      title: 'Follow @chainlink on X',
       accountId: '63727313',
       url: 'https://twitter.com/chainlink',
     },
     {
       icon: TaskItemImg,
-      title: 'Follow @CoinMarketCap',
+      title: 'Subscribe Chainlink on YouTube',
       accountId: '483472302',
-      url: 'https://twitter.com/CoinMarketCap',
+      url: 'https://www.youtube.com/channel/UCnjkrlqaWEBSnKZQ71gdyFA',
     },
     {
       icon: TaskItemImg,
-      title: 'Follow @Binance',
+      title: 'GM on ChainlinkDiscord',
       accountId: '3274824',
-      url: 'https://twitter.com/binance',
+      url: 'https://discord.com/channels/592041321326182401/605768708266131456',
     },
   ];
 
