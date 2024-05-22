@@ -1,4 +1,3 @@
-// const metaXTokenAddress = '0x75F7fE3667b051BFd60cF368B047171C6911599c';
 export const mechPetAddress = '0x6eae53F181Efff2E46c01e0d96Ca8a8A15745920';
 // const chainlinkRaffleAddress = '0xFA50748EfA00390B5Fc631bceA9D81c38c6cC434';
 // const luckyPickAddress = '0xE813f0C680956A40E6E5F6743444D3C732394945';
@@ -37,7 +36,7 @@ const usePetId = () => {
     args: walletAddress ? [walletAddress] : undefined,
   });
 
-  return { id: data || 0, error };
+  return { id: data || BigInt(0), error };
 };
 
 const useGetPetInfo = (petId?: bigint) => {
@@ -75,7 +74,20 @@ const useGetPetInfo = (petId?: bigint) => {
 };
 
 const useFeedPetForFood = () => {
-  //feedPetWithX
+  //feedPetWithFood
+  const {
+    setContract: feedPetWithFood,
+    error,
+    isPending,
+    isSuccess,
+  } = useSetContract({ address: mechPetAddress, abi: MechPetAbi, functionName: 'feedPetWithFood' });
+
+  return {
+    feedPetWithFood,
+    error,
+    isPending,
+    isSuccess,
+  };
 };
 
 const useFeedPetForX = () => {
@@ -94,4 +106,20 @@ const useFeedPetForX = () => {
   };
 };
 
-export { useClaimFreePet, useGetPetInfo, useFeedPetForX, useFeedPetForFood, usePetId };
+const useGrowPet = () => {
+  const {
+    setContract: growPet,
+    error,
+    isPending,
+    isSuccess,
+  } = useSetContract({ address: mechPetAddress, abi: MechPetAbi, functionName: 'growPet' });
+
+  return {
+    growPet,
+    error,
+    isPending,
+    isSuccess,
+  };
+};
+
+export { useClaimFreePet, useGetPetInfo, useFeedPetForX, useFeedPetForFood, usePetId, useGrowPet };

@@ -6,7 +6,7 @@ import Pagination from './Pagination';
 import StoreDetailPage from './StoreDetailPage';
 import NextPageIcon from '@assets/images/galley-nextpage.svg';
 import { atom, useAtom } from 'jotai';
-import { usePetId, useClaimFreePet, useGetPetInfo } from '@abis/contracts/mechPet/MechContract';
+import { usePetId, useClaimFreePet } from '@abis/contracts/mechPet/MechContract';
 import { BigNumber } from '@ethersproject/bignumber';
 
 export const activePageAtom = atom('1');
@@ -20,16 +20,11 @@ const FirstPage = React.memo(() => {
 
   const petIdNumber = BigNumber.from(petId).toNumber();
 
-  console.log(petIdNumber);
-
-  // React.useEffect(() => {
-  //   if (petId) {
-  //     const petIdNumber = BigNumber.from(petId).toNumber();
-  //     if (petIdNumber <= 0) {
-  //       claimFreePet();
-  //     }
-  //   }
-  // }, [petId]);
+  React.useEffect(() => {
+    if (petIdNumber <= 0) {
+      claimFreePet();
+    }
+  }, [petIdNumber]);
 
   return (
     <div className="w-full h-full flex flex-col justify-center">

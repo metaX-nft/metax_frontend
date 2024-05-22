@@ -3,11 +3,15 @@ import * as React from 'react';
 import GalleyTaskBg from '@assets/images/gallary-task-list.png';
 import TaskListIcon from '@assets/images/task-list-icon.svg';
 import TaskItemImg from '@assets/images/task-item-img.svg';
+import { useGrowPet } from '@abis/contracts/mechPet/MechContract';
 
 const TaskItem = React.memo(
   ({ icon, title, url }: { icon: string; title: string; url: string }) => {
+    const { growPet } = useGrowPet();
+
     const goX = (link: string) => {
       window.open(link, '_blank');
+      growPet([BigInt(10)]);
     };
 
     return (
