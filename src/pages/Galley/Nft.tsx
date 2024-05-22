@@ -10,6 +10,7 @@ import { useGetPetInfo, useFeedPetForX } from '@abis/contracts/mechPet/MechContr
 import { BigNumber } from '@ethersproject/bignumber';
 import { LoadingButton } from '@mui/lab';
 import { CircularProgress } from '@mui/material';
+import { useAccount } from 'wagmi';
 
 const expLimitMapper = [
   { limit: 100, base: 0, lv: 0 },
@@ -29,15 +30,22 @@ const XContent = React.memo(() => {
 
   const [freeFeedButtonActiveTime, setFreeFeedButtonActiveTime] = React.useState('');
   const [freeFeedButtonDisabled, setFreeFeedButtonDisabled] = React.useState(false);
+
   const { feedPetWithX, error, isPending, isSuccess } = useFeedPetForX();
   const current = new Date().getDate();
 
-  React.useEffect(() => {
-    const localTime: string = localStorage.getItem('freeFeedTime') || '';
-    setFreeFeedButtonActiveTime(localTime);
+  const { address } = useAccount();
 
-    if (localTime && current - Number(localTime) <= 0) {
-      setFreeFeedButtonDisabled(true);
+  React.useEffect(() => {
+    const currentAccountLocalTime: string = localStorage.getItem('freeFeedTime') || '';
+    let [currentAccount, localTime] = currentAccountLocalTime.split('+');
+
+    if (address === currentAccount) {
+      setFreeFeedButtonActiveTime(localTime);
+
+      if (localTime && current - Number(localTime) <= 0) {
+        setFreeFeedButtonDisabled(true);
+      }
     }
   }, []);
 
@@ -45,10 +53,13 @@ const XContent = React.memo(() => {
     const xAmount = XData.reduce((prev, current) => {
       return prev + current.current;
     }, 0);
+
     const amount = BigInt(xAmount);
     await feedPetWithX([amount]);
+
     const currentDay = new Date().getDate().toString();
-    localStorage.setItem('freeFeedTime', currentDay);
+    localStorage.setItem('freeFeedTime', `${address}+${currentDay}`);
+
     setFreeFeedButtonActiveTime(currentDay);
     setFreeFeedButtonDisabled(true);
   };
@@ -74,7 +85,7 @@ const XContent = React.memo(() => {
         onClick={handleFeedPetForFree}
         loading={isPending || !isSuccess}
         style={{ textTransform: 'capitalize' }}
-        disabled={freeFeedButtonDisabled}
+        disabled={!isPending || isSuccess ? freeFeedButtonDisabled : false}
         loadingIndicator={
           <span className="flex items-center">
             <CircularProgress color="info" size={16} style={{ color: 'black' }} />
@@ -146,9 +157,10 @@ const NFTbody = React.memo(({ petId }: { petId?: bigint }) => {
 
           <div className="h-[26px] w-[116px] relative text-center">
             <div className="flex gap-2  z-[20] relative items-center">
-              <span className="min-w-[26px] h-[26px] rounded-[13px] border-[2px] border-[#00873F] bg-[#3EE19E] text-center text-[14px]">
-                <img src={GalleyPoints} />
-              </span>
+              <img
+                src={GalleyPoints}
+                className="min-w-[26px] h-[26px] rounded-[13px] border-[2px] border-[#00873F] bg-[#3EE19E] "
+              />
               <span className=" text-white ">{pointNumber}</span>
             </div>
             <div className="h-[26px] w-[116px] absolute left-0 top-0 z-[5] rounded-[20px] bg-[#063122]"></div>

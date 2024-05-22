@@ -17,28 +17,35 @@ const useSetContract = ({
   Config['chains'][number]['id']
 >) => {
   //claimFreePet
-  const [error, setError] = useState<WriteContractErrorType | null>(null);
-  const [isSuccess, setSuccess] = useState<boolean>(true);
-  const [isPending, setPending] = useState<boolean>(false);
+  // const [error, setError] = useState<WriteContractErrorType | null>(null);
+  // const [isSuccess, setSuccess] = useState<boolean>(true);
+  // const [isPending, setPending] = useState<boolean>(false);
 
-  const { data: transactionHash, writeContract } = useWriteContract();
+  const { data: transactionHash, writeContract, error } = useWriteContract();
 
   const setContract = useCallback(async (args?: unknown[]) => {
-    setPending(true);
-    setSuccess(false);
-    setError(null);
+    // setPending(true);
+    // setSuccess(false);
+    // setError(null);
 
-    try {
-      await writeContract({
-        abi,
-        functionName,
-        address: abiAddress,
-        args,
-      });
-    } catch (err: any) {
-      setError(err);
-      setPending(false);
-    }
+    await writeContract({
+      abi,
+      functionName,
+      address: abiAddress,
+      args,
+    });
+
+    // try {
+    //   await writeContract({
+    //     abi,
+    //     functionName,
+    //     address: abiAddress,
+    //     args,
+    //   });
+    // } catch (err: any) {
+    //   setError(err);
+    //   setPending(false);
+    // }
   }, []);
 
   const { isLoading: isConfirming, isSuccess: isConfirmed } = useWaitForTransactionReceipt({
@@ -46,22 +53,22 @@ const useSetContract = ({
     confirmations: 4,
   });
 
-  useEffect(() => {
-    if (transactionHash) {
-      setPending(isConfirming);
-      setSuccess(isConfirmed);
+  // useEffect(() => {
+  //   if (transactionHash) {
+  //     setPending(isConfirming);
+  //     setSuccess(isConfirmed);
 
-      if (!isConfirming && !isConfirmed) {
-        setPending(false);
-      }
-    }
-  }, [isConfirming, isConfirmed, transactionHash]);
+  //     if (!isConfirming && !isConfirmed) {
+  //       setPending(false);
+  //     }
+  //   }
+  // }, [isConfirming, isConfirmed, transactionHash]);
 
   return {
     setContract,
     error,
-    isPending,
-    isSuccess,
+    isPending: isConfirming || false,
+    isSuccess: isConfirmed || true,
   };
 };
 

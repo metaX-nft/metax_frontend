@@ -11,7 +11,6 @@ export function clientToSigner(client: Client<Transport, Chain, Account>) {
     ensAddress: chain.contracts?.ensRegistry?.address,
   };
   const provider = new BrowserProvider(transport, network);
-  console.log('111', account.address);
   const signer = new JsonRpcSigner(provider, account.address);
   return signer;
 }

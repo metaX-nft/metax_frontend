@@ -15,6 +15,8 @@ import PowerIcon from '@assets/images/power.png';
 
 import './index.css';
 import { useTransfer } from '@abis/contracts/xToken/XTokenContract';
+import { parseUnits } from 'viem';
+import { metaXTokenAddress } from '@abis/contracts/xToken/XRokenabi';
 
 function StoreDetailListItem({ row, index, data }) {
   const { picture, name, price, feature } = row;
@@ -26,8 +28,9 @@ function StoreDetailListItem({ row, index, data }) {
     setTotalPrice(allPrice);
   }, [quantity]);
 
-  const { handleTrans, error, isPending } = useTransfer();
-  console.log(error);
+  // const { handleTrans, error, isPending } = useTransfer();
+  const { transfer, error, isPending, isSuccess } = useTransfer();
+
   return (
     <div
       className="grid h-[60px] text-white grid-cols-7 gap-4 items-center"
@@ -65,8 +68,11 @@ function StoreDetailListItem({ row, index, data }) {
           variant="contained"
           className="text-black rounded-full font-bold"
           onClick={() => {
-            handleTrans(totalPrice.toString());
+            if (totalPrice !== 0) {
+              transfer([metaXTokenAddress, parseUnits(totalPrice.toString(), 18)]);
+            }
           }}
+          disabled={isPending || !isSuccess || false}
         >
           buy
         </Button>
