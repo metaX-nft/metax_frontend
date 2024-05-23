@@ -16,7 +16,7 @@ const Routes: RouteObject[] = [
       </Suspense>
     ),
     children: [
-      { path: 'galley', index: true, element: <Galley /> },
+      { path: 'galley', element: <Galley /> },
       { path: 'Stake', element: <Vault /> },
       { path: 'winjoy', element: <Winjoy /> },
       { path: 'ranking', element: <Ranking /> },

@@ -1,4 +1,3 @@
-import * as React from 'react';
 import TaskList from './TaskList';
 import NFTbody from './Nft';
 import Store from './Store';
@@ -8,10 +7,14 @@ import NextPageIcon from '@assets/images/galley-nextpage.svg';
 import { atom, useAtom } from 'jotai';
 import { usePetId, useClaimFreePet } from '@abis/contracts/mechPet/MechContract';
 import { BigNumber } from '@ethersproject/bignumber';
+import { Button } from '@mui/material';
+import { useAccount, useConnect } from 'wagmi';
+import { injected } from '@wagmi/connectors';
+import { useEffect, memo, useState } from 'react';
 
 export const activePageAtom = atom('1');
 
-const FirstPage = React.memo(() => {
+const FirstPage = memo(() => {
   const [_, setActivePage] = useAtom(activePageAtom);
 
   const { id: petId } = usePetId();
@@ -20,11 +23,30 @@ const FirstPage = React.memo(() => {
 
   const petIdNumber = BigNumber.from(petId).toNumber();
 
-  React.useEffect(() => {
-    if (petIdNumber <= 0) {
-      claimFreePet();
+  const { connect } = useConnect();
+  const { isConnected } = useAccount();
+
+  const handleClaimFreePet = async () => {
+    if (!isConnected) {
+      await connect({ connector: injected() });
     }
-  }, [petIdNumber]);
+    await claimFreePet();
+  };
+
+  if (petIdNumber <= 0) {
+    return (
+      <div className="w-full h-full flex flex-col justify-center">
+        <Button
+          className="w-30 h-10 mx-auto text-[24px]"
+          variant="text"
+          onClick={handleClaimFreePet}
+          disabled={isPending || !isSuccess}
+        >
+          Claim Pet
+        </Button>
+      </div>
+    );
+  }
 
   return (
     <div className="w-full h-full flex flex-col justify-center">
@@ -46,8 +68,8 @@ const FirstPage = React.memo(() => {
   );
 });
 
-const SecondPage = React.memo(() => {
-  const [tableData, setTableData] = React.useState([
+const SecondPage = memo(() => {
+  const [tableData, setTableData] = useState([
     {
       date: '2023-8-12',
       token: 'usdc',
@@ -108,7 +130,7 @@ const SecondPage = React.memo(() => {
   const [_, setActivePage] = useAtom(activePageAtom);
 
   const columns = Object.keys(tableData[0]);
-  const [current, setCurrent] = React.useState(1);
+  const [current, setCurrent] = useState(1);
 
   return (
     <div className="w-full h-full flex flex-col ">
@@ -154,9 +176,10 @@ const SecondPage = React.memo(() => {
   );
 });
 
-const Galley = React.memo(() => {
+const Galley = memo(() => {
   const [activePage, setActivePage] = useAtom(activePageAtom);
-  React.useEffect(() => {
+
+  useEffect(() => {
     if (activePage !== '1') {
       setActivePage('1');
     }

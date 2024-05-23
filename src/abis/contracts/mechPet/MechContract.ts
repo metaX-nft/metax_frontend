@@ -80,6 +80,7 @@ const useFeedPetForFood = () => {
     error,
     isPending,
     isSuccess,
+    hash,
   } = useSetContract({ address: mechPetAddress, abi: MechPetAbi, functionName: 'feedPetWithFood' });
 
   return {
@@ -87,6 +88,7 @@ const useFeedPetForFood = () => {
     error,
     isPending,
     isSuccess,
+    hash,
   };
 };
 
@@ -96,6 +98,7 @@ const useFeedPetForX = () => {
     error,
     isPending,
     isSuccess,
+    ...rest
   } = useSetContract({ address: mechPetAddress, abi: MechPetAbi, functionName: 'feedPetWithX' });
 
   return {
@@ -103,6 +106,7 @@ const useFeedPetForX = () => {
     error,
     isPending,
     isSuccess,
+    ...rest,
   };
 };
 
@@ -112,6 +116,7 @@ const useGrowPet = () => {
     error,
     isPending,
     isSuccess,
+    hash,
   } = useSetContract({ address: mechPetAddress, abi: MechPetAbi, functionName: 'growPet' });
 
   return {
@@ -119,6 +124,7 @@ const useGrowPet = () => {
     error,
     isPending,
     isSuccess,
+    hash,
   };
 };
 

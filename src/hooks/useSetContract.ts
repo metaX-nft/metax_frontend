@@ -67,8 +67,9 @@ const useSetContract = ({
   return {
     setContract,
     error,
-    isPending: isConfirming || false,
-    isSuccess: isConfirmed || true,
+    isPending: isConfirming,
+    isSuccess: isConfirmed,
+    hash: transactionHash,
   };
 };
 

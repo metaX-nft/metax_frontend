@@ -12,24 +12,32 @@ import DrinkIcon from '@assets/images/drink.png';
 import CandyIcon from '@assets/images/candy.png';
 import Biscult from '@assets/images/biscult.png';
 import PowerIcon from '@assets/images/power.png';
+import { fedPet } from '@states/index';
 
 import './index.css';
-import { useTransfer } from '@abis/contracts/xToken/XTokenContract';
+// import { useTransfer } from '@abis/contracts/xToken/XTokenContract';
 import { parseUnits } from 'viem';
-import { metaXTokenAddress } from '@abis/contracts/xToken/XRokenabi';
+// import { metaXTokenAddress } from '@abis/contracts/xToken/XRokenabi';
+import { useFeedPetForFood } from '@abis/contracts/mechPet/MechContract';
 
 function StoreDetailListItem({ row, index, data }) {
   const { picture, name, price, feature } = row;
   const [totalPrice, setTotalPrice] = useState(0);
   const [quantity, setQuantity] = useState(0);
+  const [_, setFedPet] = useAtom(fedPet);
 
   useEffect(() => {
     const allPrice = quantity * price;
     setTotalPrice(allPrice);
   }, [quantity]);
 
-  // const { handleTrans, error, isPending } = useTransfer();
-  const { transfer, error, isPending, isSuccess } = useTransfer();
+  const { feedPetWithFood, error, isPending, isSuccess, hash } = useFeedPetForFood();
+
+  useEffect(() => {
+    if (hash && isSuccess && !isPending) {
+      setFedPet(false);
+    }
+  }, [hash, isSuccess, isPending]);
 
   return (
     <div
@@ -67,12 +75,13 @@ function StoreDetailListItem({ row, index, data }) {
           size="small"
           variant="contained"
           className="text-black rounded-full font-bold"
-          onClick={() => {
+          onClick={async () => {
             if (totalPrice !== 0) {
-              transfer([metaXTokenAddress, parseUnits(totalPrice.toString(), 18)]);
+              await feedPetWithFood([parseUnits(totalPrice.toString(), 12)]);
+              setFedPet(true);
             }
           }}
-          disabled={isPending || !isSuccess || false}
+          disabled={hash && (isSuccess || isPending)}
         >
           buy
         </Button>

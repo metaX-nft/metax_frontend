@@ -11,6 +11,8 @@ import { BigNumber } from '@ethersproject/bignumber';
 import { LoadingButton } from '@mui/lab';
 import { CircularProgress } from '@mui/material';
 import { useAccount } from 'wagmi';
+import { fedPet } from '@states/index';
+import { useAtom } from 'jotai';
 
 const expLimitMapper = [
   { limit: 100, base: 0, lv: 0 },
@@ -28,10 +30,12 @@ const XContent = React.memo(() => {
     { icon: XStart, current: 12, need: 20 },
   ];
 
+  const [_, setFedPet] = useAtom(fedPet);
+
   const [freeFeedButtonActiveTime, setFreeFeedButtonActiveTime] = React.useState('');
   const [freeFeedButtonDisabled, setFreeFeedButtonDisabled] = React.useState(false);
 
-  const { feedPetWithX, error, isPending, isSuccess } = useFeedPetForX();
+  const { feedPetWithX, error, isPending, isSuccess, hash } = useFeedPetForX();
   const current = new Date().getDate();
 
   const { address } = useAccount();
@@ -49,7 +53,7 @@ const XContent = React.memo(() => {
     }
   }, []);
 
-  const handleFeedPetForFree = async () => {
+  const handleFeedPetForFree = React.useCallback(async () => {
     const xAmount = XData.reduce((prev, current) => {
       return prev + current.current;
     }, 0);
@@ -62,13 +66,20 @@ const XContent = React.memo(() => {
 
     setFreeFeedButtonActiveTime(currentDay);
     setFreeFeedButtonDisabled(true);
-  };
+    setFedPet(true);
+  }, []);
 
   React.useEffect(() => {
     if (freeFeedButtonActiveTime && current - Number(freeFeedButtonActiveTime) >= 1) {
       setFreeFeedButtonDisabled(false);
     }
   }, [freeFeedButtonActiveTime]);
+
+  React.useEffect(() => {
+    if (hash && isSuccess && !isPending) {
+      setFedPet(false);
+    }
+  }, [hash, isSuccess, isPending]);
 
   return (
     <div className="flex flex-row justify-between mt-[20px] border-[3px] rounded-[40px] border-[#3EE19E] px-[34px] py-[23px]">
@@ -83,9 +94,9 @@ const XContent = React.memo(() => {
       <LoadingButton
         className="px-[45px] py-[18px] rounded-[65px] bg-primary text-black hover:text-white text-[24px] font-normal w-[146px] h-[64px] disabled:text-white disabled:cursor-not-allowed disabled:bg-opacity-50"
         onClick={handleFeedPetForFree}
-        loading={isPending || !isSuccess}
+        loading={hash && (isPending || !isSuccess)}
         style={{ textTransform: 'capitalize' }}
-        disabled={!isPending || isSuccess ? freeFeedButtonDisabled : false}
+        // disabled={(hash && (isPending || isSuccess)) || freeFeedButtonDisabled}
         loadingIndicator={
           <span className="flex items-center">
             <CircularProgress color="info" size={16} style={{ color: 'black' }} />
@@ -93,7 +104,7 @@ const XContent = React.memo(() => {
           </span>
         }
       >
-        Feed
+        {hash && (isPending || !isSuccess) ? '' : 'Feed'}
       </LoadingButton>
     </div>
   );
@@ -102,7 +113,7 @@ const XContent = React.memo(() => {
 const NFTbody = React.memo(({ petId }: { petId?: bigint }) => {
   const [petImg, setPetImg] = React.useState('');
   const [minSlider, setMinSlider] = React.useState(0);
-
+  const [isFedPet, _] = useAtom(fedPet);
   const petInfo = useGetPetInfo(petId);
 
   React.useEffect(() => {
@@ -125,7 +136,7 @@ const NFTbody = React.memo(({ petId }: { petId?: bigint }) => {
   const { lv, point, exp } = petInfo;
 
   const lvNumber = BigNumber.from(lv?.result ?? 0n).toNumber();
-  const expNumber = Number(BigNumber.from(exp?.result ?? 0n).toNumber());
+  const expNumber = BigNumber.from(exp?.result ?? 0n).toString();
   const limitExp = expLimitMapper[lvNumber]?.limit;
 
   React.useEffect(() => {

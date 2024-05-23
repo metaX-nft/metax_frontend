@@ -7,6 +7,7 @@ type GlobalType = {
     address?: string;
     xAccount?: string;
     xAvatar?: string;
+    xId?: string;
   };
   themeMode: 'light' | 'dark';
 };
