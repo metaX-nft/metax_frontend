@@ -33,7 +33,7 @@ const winJoyAbi = [
         "type": "uint256"
       }
     ],
-    "name": "PickTicket",
+    "name": "EndPick",
     "type": "event"
   },
   {
@@ -129,6 +129,19 @@ const winJoyAbi = [
     "type": "function"
   },
   {
+    "inputs": [],
+    "name": "getWinner",
+    "outputs": [
+      {
+        "internalType": "address",
+        "name": "",
+        "type": "address"
+      }
+    ],
+    "stateMutability": "view",
+    "type": "function"
+  },
+  {
     "inputs": [
       {
         "internalType": "contract IRaffle",
@@ -161,6 +174,6 @@ const winJoyAbi = [
     "stateMutability": "nonpayable",
     "type": "function"
   }
-]
+] as const
 
 export default winJoyAbi
