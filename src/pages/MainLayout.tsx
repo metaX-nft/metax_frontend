@@ -1,45 +1,44 @@
 import Nav from '@components/Nav';
-import { Navigate, Outlet, useSearchParams } from 'react-router-dom';
+import { Outlet, useSearchParams, useNavigate } from 'react-router-dom';
 import GalleyBg from '@assets/images/gallary-bg.svg';
 import { useEffect } from 'react';
 import globalStore from '@states/global';
-import { useQuery } from 'wagmi/query';
 
 const ContentLayout = () => {
   const [params] = useSearchParams();
-  const twId = params.get('twId') || params.get('twid');
-  const user = globalStore(state => state.user);
   const updateUser = globalStore(state => state.updateUser);
+  const navigate = useNavigate();
 
-  const fetchUser = async twId => {
-    const response = await fetch(`${process.env.HTTPURL}/users/${twId}`, {
-      method: 'GET',
-    });
+  const getUser = async () => {
+    const localTwId = localStorage.getItem('xId');
+    const twId = params.get('twId') || params.get('twid') || localTwId;
 
-    if (!response.ok) {
-      throw new Error('Network response was not ok');
+    if (twId) {
+      fetch(`${process.env.HTTPURL}/users/${twId}`, {
+        method: 'GET',
+        mode: 'cors',
+        headers: {
+          Accept: 'text/html,application/xhtml+xml,application/xml,application/json', // 设置 Accept 头，指定期望的响应格式
+        },
+      })
+        .then(res => res.json())
+        .then(data => {
+          updateUser({
+            xId: twId,
+            xAccount: data.twName,
+            xAvatar: data.avatarUrl,
+          });
+          localStorage.setItem('xId', twId);
+          navigate('/galley');
+        });
+    } else {
+      navigate('/login');
     }
-    return response.json();
   };
 
-  const { data } = useQuery({
-    queryKey: ['getXDate'],
-    queryFn: () => fetchUser(twId),
-    enabled: !!twId,
-  });
-
-  console.log(data);
-
   useEffect(() => {
-    if (twId) {
-      updateUser({ xId: twId });
-    }
+    getUser();
   }, []);
-
-  console.log(user);
-  if (!user.xId) {
-    return <Navigate to="/login" />;
-  }
 
   return (
     <div className="bg-cover bg-center " style={{ backgroundImage: `url(${GalleyBg})` }}>

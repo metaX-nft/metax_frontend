@@ -15,10 +15,8 @@ import PowerIcon from '@assets/images/power.png';
 import { fedPet } from '@states/index';
 
 import './index.css';
-// import { useTransfer } from '@abis/contracts/xToken/XTokenContract';
-import { parseUnits } from 'viem';
-// import { metaXTokenAddress } from '@abis/contracts/xToken/XRokenabi';
 import { useFeedPetForFood } from '@abis/contracts/mechPet/MechContract';
+import { parseUnits } from 'viem';
 
 function StoreDetailListItem({ row, index, data }) {
   const { picture, name, price, feature } = row;
@@ -38,6 +36,8 @@ function StoreDetailListItem({ row, index, data }) {
       setFedPet(false);
     }
   }, [hash, isSuccess, isPending]);
+
+  console.log(error);
 
   return (
     <div
@@ -77,7 +77,7 @@ function StoreDetailListItem({ row, index, data }) {
           className="text-black rounded-full font-bold"
           onClick={async () => {
             if (totalPrice !== 0) {
-              await feedPetWithFood([parseUnits(totalPrice.toString(), 12)]);
+              await feedPetWithFood([parseUnits(totalPrice.toString(), 18)]);
               setFedPet(true);
             }
           }}

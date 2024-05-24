@@ -1,4 +1,5 @@
-import { useEffect, useState } from 'react';
+import { useState } from 'react';
+import { useNavigate } from 'react-router-dom';
 
 import {
   Avatar,
@@ -9,14 +10,19 @@ import {
   ListItemIcon,
   ListItemText,
 } from '@mui/material';
-import { Logout, ContentCopy } from '@mui/icons-material';
+import { Logout, ContentCopy, LinkOff } from '@mui/icons-material';
+
 import { CopyToClipboard } from 'react-copy-to-clipboard';
-import { useAccount, useChainId, useDisconnect, useEnsAvatar, useEnsName } from 'wagmi';
+
+import { useAccount, useDisconnect, useEnsAvatar, useEnsName } from 'wagmi';
 import { normalize } from 'viem/ens';
 import Jazzicon, { jsNumberForAddress } from 'react-jazzicon';
+
 import { ellipsisHash } from '@utils/index';
 import globalStore from '@states/global';
 import ConnectorWallect from './Connector';
+
+import './Account.css';
 
 export default function Account() {
   const [open, setOpen] = useState(false);
@@ -27,12 +33,13 @@ export default function Account() {
   const { disconnect } = useDisconnect();
   const { data: ensName } = useEnsName({ address });
   const { data: ensAvatar } = useEnsAvatar({ name: ensName ? ensName : normalize('wevm.eth') });
-  const chainId = useChainId();
+  // const chainId = useChainId();
 
   const user = globalStore(state => state.user);
   const updateUser = globalStore(state => state.updateUser);
   const resetUser = globalStore(state => state.resetUser);
 
+  const navigate = useNavigate();
   const handleOpenMenu = (event: React.MouseEvent<HTMLElement>) => {
     setAnchorEl(event.currentTarget);
   };
@@ -43,19 +50,18 @@ export default function Account() {
 
   const handleDisconnect = () => {
     disconnect();
-    resetUser();
+    updateUser({ address: '' });
   };
 
   const handleControllerTip = () => {
     setOpen(open ? false : true);
   };
 
-  useEffect(() => {
-    updateUser({
-      chainId,
-      address,
-    });
-  }, [chainId, address]);
+  const handleLogout = () => {
+    resetUser();
+    localStorage.removeItem('xid');
+    navigate('/login');
+  };
 
   return (
     <>
@@ -67,9 +73,14 @@ export default function Account() {
         aria-haspopup="true"
         aria-expanded={open ? 'true' : undefined}
       >
-        <Avatar sx={{ width: 32, height: 32 }} src={user.xAvatar}>
-          {user.xAccount}
-        </Avatar>
+        <div className="accountButton px-6">
+          <div className="relative z-2 flex items-center">
+            <Avatar sx={{ width: 32, height: 32 }} src={user.xAvatar}></Avatar>
+            <span className="ml-3 text-white" style={{ textTransform: 'capitalize' }}>
+              {user.xAccount}
+            </span>
+          </div>
+        </div>
       </IconButton>
 
       <Menu
@@ -105,9 +116,15 @@ export default function Account() {
             <Divider key="divider" />,
             <MenuItem key="discount" onClick={handleDisconnect}>
               <ListItemIcon>
-                <Logout></Logout>
+                <LinkOff />
               </ListItemIcon>
               <ListItemText>Disconnect</ListItemText>
+            </MenuItem>,
+            <MenuItem key="logout" onClick={handleLogout}>
+              <ListItemIcon>
+                <Logout />
+              </ListItemIcon>
+              <ListItemText>Logout</ListItemText>
             </MenuItem>,
           ]
         ) : (

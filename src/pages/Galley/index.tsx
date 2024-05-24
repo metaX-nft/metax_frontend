@@ -11,6 +11,7 @@ import { Button } from '@mui/material';
 import { useAccount, useConnect } from 'wagmi';
 import { injected } from '@wagmi/connectors';
 import { useEffect, memo, useState } from 'react';
+import ConnectorWallect from '@components/Connector';
 
 export const activePageAtom = atom('1');
 
@@ -44,6 +45,9 @@ const FirstPage = memo(() => {
         >
           Claim Pet
         </Button>
+        <div className="text-center text-[18px] mt-2 text-gray-200">
+          Please <ConnectorWallect /> first
+        </div>
       </div>
     );
   }
@@ -177,7 +181,7 @@ const SecondPage = memo(() => {
 });
 
 const Galley = memo(() => {
-  const [activePage, setActivePage] = useAtom(activePageAtom);
+  const [activePage] = useAtom(activePageAtom);
 
   useEffect(() => {
     if (activePage !== '1') {

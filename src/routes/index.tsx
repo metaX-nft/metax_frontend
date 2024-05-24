@@ -11,7 +11,7 @@ const Routes: RouteObject[] = [
   {
     path: '/',
     element: (
-      <Suspense>
+      <Suspense fallback={<div>loading ....</div>}>
         <MainLayout />
       </Suspense>
     ),
@@ -21,10 +21,10 @@ const Routes: RouteObject[] = [
       { path: 'winjoy', element: <Winjoy /> },
       { path: 'ranking', element: <Ranking /> },
       { path: 'demo', element: <Demo /> },
-      {
-        index: true,
-        element: <Navigate to="/galley" replace />,
-      },
+      // {
+      //   index: true,
+      //   element: <Navigate to="/galley" replace />,
+      // },
     ],
   },
   {

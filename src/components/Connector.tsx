@@ -1,16 +1,19 @@
 import { useState, useEffect } from 'react';
 import { Button } from '@mui/material';
 
-import { useChainId, Connector, useConnect } from 'wagmi';
+import { useChainId, Connector, useConnect, useAccount } from 'wagmi';
 import useMetaMask from '@hooks/useMetaMask';
+import globalStore from '@states/global';
 
 export default function ConnectorWallect() {
   const [ready, setReady] = useState(false);
 
   const { connect } = useConnect();
   const chainId = useChainId();
+  const { address } = useAccount();
 
   const metamask: Connector = useMetaMask();
+  const updateUser = globalStore(state => state.updateUser);
 
   useEffect(() => {
     if (metamask) {
@@ -35,6 +38,9 @@ export default function ConnectorWallect() {
       {
         onError(error, variables, context) {
           console.log(error);
+        },
+        onSuccess() {
+          updateUser({ address: address, chainId: chainId });
         },
       },
     );
