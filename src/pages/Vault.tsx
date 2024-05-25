@@ -1,4 +1,5 @@
 import * as React from 'react';
+import { useState, useEffect } from 'react'
 
 import StakeBg from '@assets/images/stake-bg.svg'
 import TaskListIcon from '@assets/images/task-list-icon.svg';
@@ -6,8 +7,42 @@ import InputIcon from '@assets/images/stake-input-icon.png'
 import Staked from '@assets/images/staked.svg'
 import Claim from '@assets/images/claim.svg'
 
+import { useStakedETH, useSendStakeWork, useClaimXToken, useUnStakeETH } from '@abis/contracts/stake/StakeContract'
+
 const Vault = React.memo(() => {
-  const [inputValue, setInputValue] = React.useState('2341')
+  const [inputValue, setInputValue] = useState('1')
+
+  const { data: StakedETH } = useStakedETH()
+  const { sendUnStake, unStaking } = useUnStakeETH()
+  const handleUnStake = () => {
+    sendUnStake();
+  }
+
+  // stake eth
+  const { sendStakeInput, sending, sendSuccess, } = useSendStakeWork()
+  const handleSendStakeWork = async () => {
+    try {
+      await sendStakeInput(inputValue)
+    } catch (e) {
+      console.log('e', e);
+    }
+  }
+
+  useEffect(() => {
+    if (sendSuccess) {
+      setInputValue('1')
+    }
+  }, [sendSuccess])
+
+  // claim 
+  const { sendClaim, claiming } = useClaimXToken()
+
+  const handleClaim = () => {
+    if (!claiming) {
+      sendClaim()
+    }
+  }
+
 
   return (
     <div className="w-full h-full flex justify-center items-center">
@@ -23,25 +58,25 @@ const Vault = React.memo(() => {
               <img src={InputIcon} className='w-[24px] h-[24px]' />
               <input value={inputValue} onChange={e => setInputValue(e.target.value.replace(' ', ''))} className='w-[430px] bg-[unset] text-white text-right leading-[29px] text-[24px] font-[400]' />
             </div>
-            <button className='rounded-[38px] w-[263px] h-[64px] bg-[#47E49F] ml-[50px]'>
-              <span className='font-[400] text-[24px] leading-[29px]'>Stake ETH</span></button>
+            <button className='rounded-[38px] w-[263px] h-[64px] bg-[#47E49F] ml-[50px]' onClick={handleSendStakeWork}>
+              <span className='font-[400] text-[24px] leading-[29px]'>{sending ? 'sending' : 'Stake ETH'}</span></button>
           </div>
 
           <div className='flex justify-center mt-[37px]'>
             <div className='w-[380px] h-[350px] border-[2px] border-[#47E49F] rounded-[40px] mr-[47px] py-[40px] flex flex-col items-center'>
               <img src={Staked} className='w-[71px] h-[71px]' />
               <p className='mt-[19px] text-white text-[24px] leading-[29px] font-[400]'>Staked</p>
-              <p className='mt-[21px] text-white text-[32px] leading-[39px] font-[700]'>1231</p>
+              <p className='mt-[21px] text-white text-[32px] leading-[39px] font-[700]'>{StakedETH as number}</p>
               <button className='mt-[36px] rounded-[32px] w-[264px] h-[54px] bg-[#47E49F]'>
-                <span className='text-[24px] leading-[29px] font-[400]'>UnStake</span>
+                <span className='text-[24px] leading-[29px] font-[400]' onClick={handleUnStake}>{unStaking ? 'unStaking' : 'UnStake'}</span>
               </button>
             </div>
             <div className='w-[380px] h-[350px] border-[2px] border-[#47E49F] rounded-[40px] py-[40px] flex flex-col items-center'>
               <img src={Claim} className='w-[71px] h-[71px]' />
               <p className='mt-[19px] text-white text-[24px] leading-[29px] font-[400]'>XToken</p>
-              <p className='mt-[21px] text-white text-[32px] leading-[39px] font-[700]'>67,334,421</p>
-              <button className='mt-[36px] rounded-[32px] w-[264px] h-[54px] bg-[#47E49F]'>
-                <span className='text-[24px] leading-[29px] font-[400]'>Claim</span>
+              <p className='mt-[21px] text-white text-[32px] leading-[39px] font-[700]'>1 XToken / day</p>
+              <button className='mt-[36px] rounded-[32px] w-[264px] h-[54px] bg-[#47E49F]' onClick={handleClaim}>
+                <span className='text-[24px] leading-[29px] font-[400]'>{claiming ? "claiming" : 'Claim'}</span>
               </button>
             </div>
           </div>
