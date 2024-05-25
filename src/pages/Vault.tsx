@@ -1,6 +1,6 @@
 import * as React from 'react';
 import { useState, useEffect } from 'react'
-
+import { BigNumber } from '@ethersproject/bignumber'
 import StakeBg from '@assets/images/stake-bg.svg'
 import TaskListIcon from '@assets/images/task-list-icon.svg';
 import InputIcon from '@assets/images/stake-input-icon.png'
@@ -19,7 +19,7 @@ const Vault = React.memo(() => {
   }
 
   // stake eth
-  const { sendStakeInput, sending, sendSuccess, } = useSendStakeWork()
+  const { sendStakeInput, sending, sendSuccess, stakeError} = useSendStakeWork()
   const handleSendStakeWork = async () => {
     try {
       await sendStakeInput(inputValue)

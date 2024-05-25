@@ -37,7 +37,7 @@ const ContentLayout = () => {
   };
 
   useEffect(() => {
-    getUser();
+    // getUser();
   }, []);
 
   return (

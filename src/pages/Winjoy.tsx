@@ -16,6 +16,7 @@ import RightCoins1 from '@assets/images/right-coins-1.svg'
 import RightCoins2 from '@assets/images/right-coins-2.svg'
 import RightCoins3 from '@assets/images/right-coins-3.svg'
 import RightCoins4 from '@assets/images/right-coins-4.svg'
+import { BigNumber } from '@ethersproject/bignumber';
 
 const WinJoy = React.memo(() => {
   const { address } = useAccount();
@@ -25,50 +26,42 @@ const WinJoy = React.memo(() => {
 
   // get raffle result
   const { result } = useGetJoyResult();
-  const { isPending, isConfirmed, isConfirming, buyATicket } = useJoinJoy()
+  const [hasOpened, setHasOpened] = useState(!!result);
 
-  const belongDate = localStorage.getItem('winJoy-joined-date') ?? '';
-  const [hasJoined, setJoined] = useState(() => {
-    return belongDate !== ''
-  })
+  const [hasJoin, setHasJoin] = useState(() => {
+    const localJoin = JSON.parse(localStorage.getItem('x-token-winJoy-joined') ?? 'false')
+    return Boolean(localJoin)
+  });
 
-  const resultBelongToday = isBeforeTodayResultDate ? moment(today) : moment(nextDay);
+  const { buyATicket, isLoading, isConfirming, isSuccess } = useJoinJoy()
+  const { winnerResult, isConfirming: isGetting, isConfirmed: getSuccess } = useClaimResult()
 
-  const [waitingResult] = useState(() => {
-    if (belongDate) {
-      return resultBelongToday.isBefore(`${belongDate} 12:00:00`);
-    }
-    return false
-  })
+  const handleByTicket = () => {
+    buyATicket()
+  }
 
-  const [viewResult, setViewResult] = useState(false)
-
-  useEffect(() => {
-    if (isConfirmed) {
-      const partInDate = isBeforeTodayResultDate ? today.format('YYYY-MM-DD') : nextDay.format('YYYY-MM-DD');
-      localStorage.setItem('winJoy-joined-date', partInDate);
-      setJoined(true)
-      setViewResult(false)
-    }
-  }, [isConfirmed, isConfirming])
-
-  const { winnerResult, isConfirming: isGeting, isConfirmed: getSuccess } = useClaimResult()
   const handleSorryOrClaim = () => {
-    if (hasJoined && result !== address) {
-      setViewResult(true)
-      localStorage.removeItem('winJoy-joined-date')
+    if (result && BigNumber.from(result).toString() === address) {
+      winnerResult();
     } else {
-      winnerResult()
+      setHasOpened(false)
     }
   }
 
   useEffect(() => {
-    if (getSuccess) {
-      localStorage.removeItem('winJoy-joined-date')
-      setViewResult(true)
-      setJoined(false)
+    if (isSuccess) {
+      setHasJoin(true)
+      localStorage.setItem('x-token-winJoy-joined', 'true')
     }
-  }, [isGeting, getSuccess])
+  }, [isSuccess])
+
+  useEffect(() => {
+    if (getSuccess) {
+      setHasJoin(false);
+    }
+  }, [getSuccess])
+
+  const claimText = isGetting ? 'claiming...' : 'claim'
 
   const buttonClass = 'w-[263px] h-[64px] mt-[61px] text-[#47E49F] font-[24px] leading-[29px] rounded-[38px] border-[2px] border-[#47E49F]'
   return (
@@ -88,17 +81,21 @@ const WinJoy = React.memo(() => {
           } />
 
         {
-          (hasJoined && !viewResult) ? (
-            <button className={waitingResult ? `${buttonClass} disabled:cursor-not-allowed` : buttonClass} disabled={waitingResult || isGeting} onClick={handleSorryOrClaim}>
-              {waitingResult ? 'Waiting Result...' : result === address ? 'Claim' : "Sorry"}
+          hasOpened ? (
+            <button className={buttonClass} onClick={handleSorryOrClaim}>
+              {result === address ? claimText : "Sorry"}
             </button>
-          ) : (
-            <button className='w-[263px] h-[64px] mt-[61px] text-[#47E49F] font-[24px] leading-[29px] rounded-[38px] border-[2px] border-[#47E49F]' onClick={buyATicket}>
+          ) : hasJoin ? (
+            <button className={buttonClass} disabled>
+              waiting result...
+            </button>
+          ) :
+            (<button className={buttonClass} onClick={handleByTicket}>
               {
-                isPending ? 'loading...' : isConfirming ? 'confirming...' : "Register"
+                isLoading ? 'loading...' : isConfirming ? 'confirming...' : "Register"
               }
             </button>
-          )
+            )
         }
       </div>
 
