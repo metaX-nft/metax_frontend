@@ -414,6 +414,11 @@ const MechPetAbi = [
         name: 'amount',
         type: 'uint256',
       },
+      {
+        internalType: 'uint256',
+        name: 'exp',
+        type: 'uint256',
+      },
     ],
     name: 'feedPetWithFood',
     outputs: [],
@@ -641,6 +646,19 @@ const MechPetAbi = [
   {
     inputs: [],
     name: 'renounceOwnership',
+    outputs: [],
+    stateMutability: 'nonpayable',
+    type: 'function',
+  },
+  {
+    inputs: [
+      {
+        internalType: 'uint256',
+        name: 'tokenId',
+        type: 'uint256',
+      },
+    ],
+    name: 'reset',
     outputs: [],
     stateMutability: 'nonpayable',
     type: 'function',

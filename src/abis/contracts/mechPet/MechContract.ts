@@ -1,8 +1,4 @@
-export const mechPetAddress = '0x6eae53F181Efff2E46c01e0d96Ca8a8A15745920';
-// const chainlinkRaffleAddress = '0xFA50748EfA00390B5Fc631bceA9D81c38c6cC434';
-// const luckyPickAddress = '0xE813f0C680956A40E6E5F6743444D3C732394945';
-// const expStakeAddress = '0xAD3c67db91309b2cEd457A4c0fD8aE9Eae7878D7';
-// const priceFeedAddress = '0x83140d6532Af3769047dCB36cf9A6D7133275A38';
+export const mechPetAddress = process.env.MECH_PET_ADDRESS;
 
 import MechPetAbi from './MechPetAbi';
 
@@ -16,6 +12,7 @@ const useClaimFreePet = () => {
     error,
     isPending,
     isSuccess,
+    hash,
   } = useSetContract({ abi: MechPetAbi, functionName: 'claimFreePet', address: mechPetAddress });
 
   return {
@@ -23,6 +20,7 @@ const useClaimFreePet = () => {
     error,
     isPending,
     isSuccess,
+    hash,
   };
 };
 
@@ -40,31 +38,33 @@ const usePetId = () => {
 };
 
 const useGetPetInfo = (petId?: bigint) => {
+  const args = petId ? [petId] : undefined;
+
   const results = useReadContracts({
     contracts: [
       {
         abi: MechPetAbi,
         functionName: 'getLv',
         address: mechPetAddress,
-        args: [petId],
+        args,
       },
       {
         abi: MechPetAbi,
         functionName: 'getExp',
         address: mechPetAddress,
-        args: [petId],
+        args,
       },
       {
         abi: MechPetAbi,
         functionName: 'getPoint',
         address: mechPetAddress,
-        args: [petId],
+        args,
       },
       {
         abi: MechPetAbi,
         functionName: 'tokenURI',
         address: mechPetAddress,
-        args: [petId],
+        args,
       },
     ],
   });

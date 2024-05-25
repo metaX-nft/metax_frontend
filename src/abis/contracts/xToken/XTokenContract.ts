@@ -1,5 +1,5 @@
 import useSetContract from '@hooks/useSetContract';
-import { XTokenAbi, metaXTokenAddress } from './XRokenabi';
+import { XTokenAbi, metaXTokenAddress } from './XTokenabi';
 
 export const useMintToken = () => {
   const { setContract: mintToken, error } = useSetContract({
@@ -23,4 +23,19 @@ export const useTransfer = () => {
     functionName: 'transfer',
   });
   return { transfer, error, isPending, isSuccess };
+};
+
+export const useApprove = () => {
+  const {
+    setContract: approve,
+    error,
+    isPending,
+    isSuccess,
+    hash,
+  } = useSetContract({
+    abi: XTokenAbi,
+    address: metaXTokenAddress,
+    functionName: 'approve',
+  });
+  return { approve, error, isPending, isSuccess, hash };
 };

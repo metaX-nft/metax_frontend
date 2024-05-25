@@ -8,8 +8,7 @@ import { atom, useAtom } from 'jotai';
 import { usePetId, useClaimFreePet } from '@abis/contracts/mechPet/MechContract';
 import { BigNumber } from '@ethersproject/bignumber';
 import { Button } from '@mui/material';
-import { useAccount, useConnect } from 'wagmi';
-import { injected } from '@wagmi/connectors';
+import { useAccount } from 'wagmi';
 import { useEffect, memo, useState } from 'react';
 import ConnectorWallect from '@components/Connector';
 
@@ -17,20 +16,19 @@ export const activePageAtom = atom('1');
 
 const FirstPage = memo(() => {
   const [_, setActivePage] = useAtom(activePageAtom);
+  const [petIdNumber, setPetIdNumber] = useState(0);
 
   const { id: petId } = usePetId();
+  const { claimFreePet, error: claimError, isPending, isSuccess, hash } = useClaimFreePet();
 
-  const { claimFreePet, error: claimError, isPending, isSuccess } = useClaimFreePet();
+  useEffect(() => {
+    const petIdToNumber = BigNumber.from(petId).toNumber();
+    setPetIdNumber(petIdToNumber);
+  }, [petId]);
 
-  const petIdNumber = BigNumber.from(petId).toNumber();
-
-  const { connect } = useConnect();
   const { isConnected } = useAccount();
 
   const handleClaimFreePet = async () => {
-    if (!isConnected) {
-      await connect({ connector: injected() });
-    }
     await claimFreePet();
   };
 
@@ -41,13 +39,15 @@ const FirstPage = memo(() => {
           className="w-30 h-10 mx-auto text-[24px]"
           variant="text"
           onClick={handleClaimFreePet}
-          disabled={isPending || !isSuccess}
+          disabled={(hash && (isPending || !isSuccess)) || !isConnected}
         >
           Claim Pet
         </Button>
-        <div className="text-center text-[18px] mt-2 text-gray-200">
-          Please <ConnectorWallect /> first
-        </div>
+        {!isConnected && (
+          <div className="text-center text-[18px] mt-2 text-gray-200">
+            Please <ConnectorWallect /> first
+          </div>
+        )}
       </div>
     );
   }
@@ -59,15 +59,15 @@ const FirstPage = memo(() => {
           <TaskList />
         </div>
         <div>
-          <NFTbody petId={petId} />
+          <NFTbody petId={BigInt(petIdNumber)} />
         </div>
         <div style={{ marginLeft: '7rem' }}>
           <Store />
         </div>
       </div>
-      <div className="flex justify-center mt-[73px] cursor-pointer">
+      {/* <div className="flex justify-center mt-[73px] cursor-pointer">
         <img src={NextPageIcon} onClick={() => setActivePage('2')} />
-      </div>
+      </div> */}
     </div>
   );
 });
@@ -181,7 +181,7 @@ const SecondPage = memo(() => {
 });
 
 const Galley = memo(() => {
-  const [activePage] = useAtom(activePageAtom);
+  const [activePage, setActivePage] = useAtom(activePageAtom);
 
   useEffect(() => {
     if (activePage !== '1') {

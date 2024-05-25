@@ -3,8 +3,8 @@ import * as React from 'react';
 import XThumb from '@assets/images/x-thumb.svg';
 import XCommunity from '@assets/images/x-community.svg';
 import XStart from '@assets/images/x-start.svg';
+import defaultNft from '@assets/images/default-nft.png';
 
-// import NFT from '@assets/images/nft.png';
 import GalleyPoints from '@assets/images/galley-points.svg';
 import { useGetPetInfo, useFeedPetForX } from '@abis/contracts/mechPet/MechContract';
 import { BigNumber } from '@ethersproject/bignumber';
@@ -13,6 +13,7 @@ import { CircularProgress } from '@mui/material';
 import { useAccount } from 'wagmi';
 import { fedPet } from '@states/index';
 import { useAtom } from 'jotai';
+import globalStore from '@states/global';
 
 const expLimitMapper = [
   { limit: 100, base: 0, lv: 0 },
@@ -24,21 +25,22 @@ const expLimitMapper = [
 ];
 
 const XContent = React.memo(() => {
-  const XData = [
+  const XDataDemo = [
     { icon: XThumb, current: 12, need: 20 },
     { icon: XCommunity, current: 12, need: 20 },
     { icon: XStart, current: 12, need: 20 },
   ];
-
   const [_, setFedPet] = useAtom(fedPet);
 
   const [freeFeedButtonActiveTime, setFreeFeedButtonActiveTime] = React.useState('');
   const [freeFeedButtonDisabled, setFreeFeedButtonDisabled] = React.useState(false);
+  const [xData, setXData] = React.useState(XDataDemo);
 
   const { feedPetWithX, error, isPending, isSuccess, hash } = useFeedPetForX();
   const current = new Date().getDate();
 
   const { address } = useAccount();
+  const user = globalStore(state => state.user);
 
   React.useEffect(() => {
     const currentAccountLocalTime: string = localStorage.getItem('freeFeedTime') || '';
@@ -54,7 +56,7 @@ const XContent = React.memo(() => {
   }, []);
 
   const handleFeedPetForFree = React.useCallback(async () => {
-    const xAmount = XData.reduce((prev, current) => {
+    const xAmount = xData.reduce((prev, current) => {
       return prev + current.current;
     }, 0);
 
@@ -81,9 +83,23 @@ const XContent = React.memo(() => {
     }
   }, [hash, isSuccess, isPending]);
 
+  React.useEffect(() => {
+    fetch(`${process.env.HTTPURL}/api/v1/tweets/${user.xId}}`, {
+      method: 'GET',
+      mode: 'cors',
+      headers: {
+        Accept: 'text/html,application/xhtml+xml,application/xml,application/json', // 设置 Accept 头，指定期望的响应格式
+      },
+    })
+      .then(res => res.json())
+      .then(data => {
+        console.log(data);
+      });
+  }, []);
+
   return (
     <div className="flex flex-row justify-between mt-[20px] border-[3px] rounded-[40px] border-[#3EE19E] px-[34px] py-[23px]">
-      {XData.map((item, index) => (
+      {xData.map((item, index) => (
         <div className="flex justify-center flex-col" key={index}>
           <img className="mb-[8px] w-[33px] h-[33px]" src={item.icon}></img>
           <span className="text-[14px] leading-[20px] text-white">
@@ -96,7 +112,7 @@ const XContent = React.memo(() => {
         onClick={handleFeedPetForFree}
         loading={hash && (isPending || !isSuccess)}
         style={{ textTransform: 'capitalize' }}
-        // disabled={(hash && (isPending || isSuccess)) || freeFeedButtonDisabled}
+        disabled={(hash && (isPending || isSuccess)) || freeFeedButtonDisabled}
         loadingIndicator={
           <span className="flex items-center">
             <CircularProgress color="info" size={16} style={{ color: 'black' }} />
@@ -177,7 +193,7 @@ const NFTbody = React.memo(({ petId }: { petId?: bigint }) => {
             <div className="h-[26px] w-[116px] absolute left-0 top-0 z-[5] rounded-[20px] bg-[#063122]"></div>
           </div>
         </div>
-        {petImg && <img className="w-[500px] h-[510px] mx-auto" src={petImg} />}
+        <img className="w-[500px] h-[510px] mx-auto" src={petImg || defaultNft} />
       </div>
       <XContent />
     </>

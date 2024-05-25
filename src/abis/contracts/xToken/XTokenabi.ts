@@ -1,4 +1,4 @@
-export const metaXTokenAddress = '0x75F7fE3667b051BFd60cF368B047171C6911599c';
+export const metaXTokenAddress = process.env.META_X_TOKEN_ADDRESS;
 
 export const XTokenAbi = [
   {

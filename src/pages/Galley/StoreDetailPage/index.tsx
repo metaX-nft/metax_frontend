@@ -1,7 +1,10 @@
 import { useState, useCallback, useEffect } from 'react';
 import { useAtom } from 'jotai';
-import { Button, InputBase } from '@mui/material';
+import { parseUnits } from 'viem';
+
+import { InputBase } from '@mui/material';
 import { KeyboardBackspace } from '@mui/icons-material';
+import { LoadingButton } from '@mui/lab';
 
 import { activePageAtom } from '../index';
 import StoreListBg from '@assets/images/store-list-bg.png';
@@ -14,30 +17,49 @@ import Biscult from '@assets/images/biscult.png';
 import PowerIcon from '@assets/images/power.png';
 import { fedPet } from '@states/index';
 
+import { useFeedPetForFood, mechPetAddress } from '@abis/contracts/mechPet/MechContract';
+import { useApprove } from '@abis/contracts/xToken/XTokenContract';
+
 import './index.css';
-import { useFeedPetForFood } from '@abis/contracts/mechPet/MechContract';
-import { parseUnits } from 'viem';
 
 function StoreDetailListItem({ row, index, data }) {
   const { picture, name, price, feature } = row;
   const [totalPrice, setTotalPrice] = useState(0);
   const [quantity, setQuantity] = useState(0);
+  const [exp, setExp] = useState(0);
   const [_, setFedPet] = useAtom(fedPet);
+  const [activePage, setActivePage] = useAtom(activePageAtom);
 
   useEffect(() => {
     const allPrice = quantity * price;
     setTotalPrice(allPrice);
+    const allExp = feature * quantity;
+    setExp(allExp);
   }, [quantity]);
 
   const { feedPetWithFood, error, isPending, isSuccess, hash } = useFeedPetForFood();
+  const {
+    approve,
+    error: approveError,
+    isPending: approvePending,
+    isSuccess: approveSuccess,
+    hash: approveHash,
+  } = useApprove();
+
+  console.log(approveHash, approvePending, approveSuccess);
 
   useEffect(() => {
-    if (hash && isSuccess && !isPending) {
+    if (approveHash && (approveSuccess || !approvePending)) {
+      feedPetWithFood([parseUnits(totalPrice.toString(), 18), exp]);
+    }
+  }, [approvePending, approveSuccess, approveHash]);
+
+  useEffect(() => {
+    if (hash && (isSuccess || !isPending)) {
       setFedPet(false);
+      setActivePage('1');
     }
   }, [hash, isSuccess, isPending]);
-
-  console.log(error);
 
   return (
     <div
@@ -57,7 +79,7 @@ function StoreDetailListItem({ row, index, data }) {
       </span>
       <span className="list-item">{name}</span>
       <span className="list-item">{price}</span>
-      <span className="list-item">+{feature}</span>
+      <span className="list-item">+{feature} exp</span>
       <span className="list-item">
         <InputBase
           inputProps={{ min: 0 }}
@@ -71,20 +93,20 @@ function StoreDetailListItem({ row, index, data }) {
       </span>
       <span className="list-item">{totalPrice}</span>
       <span className="list-item">
-        <Button
+        <LoadingButton
           size="small"
           variant="contained"
           className="text-black rounded-full font-bold"
           onClick={async () => {
             if (totalPrice !== 0) {
-              await feedPetWithFood([parseUnits(totalPrice.toString(), 18)]);
-              setFedPet(true);
+              await approve([mechPetAddress, parseUnits(totalPrice.toString(), 18)]);
             }
           }}
+          loading={approveHash && (approvePending || !approveSuccess)}
           disabled={hash && (isSuccess || isPending)}
         >
           buy
-        </Button>
+        </LoadingButton>
       </span>
     </div>
   );
@@ -115,28 +137,28 @@ export default function StoreDetailPage() {
       picture: VegtableIcon,
       name: 'Vegtable',
       price: '0.002',
-      feature: '5 exp',
+      feature: '5',
       totalPrice: '0.006',
     },
     {
       picture: DrinkIcon,
       name: 'Drink',
       price: '0.04',
-      feature: '60 exp',
+      feature: '60',
       totalPrice: '0',
     },
     {
       picture: CandyIcon,
       name: 'Candy',
       price: '0.1',
-      feature: '230 exp',
+      feature: '230',
       totalPrice: '0',
     },
     {
       picture: Biscult,
       name: 'Biscult',
       price: '0.3',
-      feature: '680 exp',
+      feature: '680',
       totalPrice: '0',
     },
     {

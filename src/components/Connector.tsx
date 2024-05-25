@@ -32,14 +32,14 @@ export default function ConnectorWallect() {
     );
   }
 
-  const handleConnectWallect = () => {
-    connect(
+  const handleConnectWallect = async () => {
+    await connect(
       { connector: metamask, chainId },
       {
         onError(error, variables, context) {
           console.log(error);
         },
-        onSuccess() {
+        onSuccess: function () {
           updateUser({ address: address, chainId: chainId });
         },
       },

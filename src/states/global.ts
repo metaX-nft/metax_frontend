@@ -8,6 +8,7 @@ type GlobalType = {
     xAccount?: string;
     xAvatar?: string;
     xId?: string;
+    petId?: number;
   };
   themeMode: 'light' | 'dark';
 };
