@@ -27,6 +27,7 @@ const ContentLayout = () => {
             xId: twId,
             xAccount: data.twName,
             xAvatar: data.avatarUrl,
+            wallectIsApprove: false,
           });
           localStorage.setItem('xId', twId);
           navigate('/galley');
@@ -37,7 +38,7 @@ const ContentLayout = () => {
   };
 
   useEffect(() => {
-    // getUser();
+    getUser();
   }, []);
 
   return (
