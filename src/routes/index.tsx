@@ -19,8 +19,8 @@ const Routes: RouteObject[] = [
       { path: 'galley', element: <Galley /> },
       { path: 'Stake', element: <Vault /> },
       { path: 'winjoy', element: <Winjoy /> },
-      { path: 'ranking', element: <Ranking /> },
-      { path: 'demo', element: <Demo /> },
+      // { path: 'ranking', element: <Ranking /> },
+      // { path: 'demo', element: <Demo /> },
       // {
       //   index: true,
       //   element: <Navigate to="/galley" replace />,

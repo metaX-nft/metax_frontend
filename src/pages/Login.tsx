@@ -3,6 +3,7 @@ import LoginMid from '@assets/images/login_mid.png';
 import LoginBg from '@assets/images/bg.png';
 
 import { ArrowRightAlt } from '@mui/icons-material';
+const HTTPURL = process.env.HTTPURL;
 
 const LoginPage = () => {
   return (
@@ -30,7 +31,7 @@ const LoginPage = () => {
             Empower digital asset <span className="text-primary">with X</span>
           </p>
           <a
-            href="http://54.253.4.207:3000/auth/twitter"
+            href={`${HTTPURL}/auth/twitter`}
             className="flex w-[266px] h-[72px] mt-10 mx-auto rounded-full font-normal bg-gradient-to-r from-gradient-from to-gradient-to text-xl items-center justify-center hover:from-gradient-to hover:to-gradient-to transition-all hover:transition-all"
           >
             <span className="mr-5">Connect X</span>

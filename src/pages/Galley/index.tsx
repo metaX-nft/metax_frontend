@@ -1,22 +1,31 @@
+import { useEffect, memo, useState } from 'react';
+import { useAccount, useBalance } from 'wagmi';
+import { parseUnits } from 'viem';
+import { atom, useAtom } from 'jotai';
+
+import { Button } from '@mui/material';
 import TaskList from './TaskList';
 import NFTbody from './Nft';
 import Store from './Store';
 import Pagination from './Pagination';
 import StoreDetailPage from './StoreDetailPage';
 import NextPageIcon from '@assets/images/galley-nextpage.svg';
-import { atom, useAtom } from 'jotai';
-import { usePetId, useClaimFreePet } from '@abis/contracts/mechPet/MechContract';
-import { BigNumber } from '@ethersproject/bignumber';
-import { Button } from '@mui/material';
-import { useAccount } from 'wagmi';
-import { useEffect, memo, useState } from 'react';
+
 import ConnectorWallect from '@components/Connector';
+import { metaXTokenAddress } from '@abis/contracts/xToken/XTokenabi';
+import { useApprove } from '@abis/contracts/xToken/XTokenContract';
+import { usePetId, useClaimFreePet, mechPetAddress } from '@abis/contracts/mechPet/MechContract';
+import { BigNumber } from '@ethersproject/bignumber';
+import globalStore from '@states/global';
 
 export const activePageAtom = atom('1');
 
 const FirstPage = memo(() => {
   const [_, setActivePage] = useAtom(activePageAtom);
   const [petIdNumber, setPetIdNumber] = useState(0);
+  const { user, updateUser } = globalStore(state => {
+    return { user: state.user, updateUser: state.updateUser };
+  });
 
   const { id: petId } = usePetId();
   const { claimFreePet, error: claimError, isPending, isSuccess, hash } = useClaimFreePet();
@@ -26,11 +35,32 @@ const FirstPage = memo(() => {
     setPetIdNumber(petIdToNumber);
   }, [petId]);
 
-  const { isConnected } = useAccount();
+  const { isConnected, status, address } = useAccount();
 
   const handleClaimFreePet = async () => {
     await claimFreePet();
   };
+
+  const { approve, error: approveError } = useApprove();
+
+  const { data: tokenBalance, error: tokenError } = useBalance({
+    token: metaXTokenAddress,
+    scopeKey: 'xtoken',
+    address,
+  });
+
+  const handleApprove = async () => {
+    if (tokenBalance) {
+      await approve([mechPetAddress, tokenBalance.value]);
+      updateUser({ wallectIsApprove: true });
+    }
+  };
+
+  useEffect(() => {
+    if (status === 'connected' && !user.wallectIsApprove) {
+      handleApprove();
+    }
+  }, [status, tokenBalance]);
 
   if (petIdNumber <= 0) {
     return (

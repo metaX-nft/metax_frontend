@@ -2,9 +2,8 @@ import { useState, useCallback, useEffect } from 'react';
 import { useAtom } from 'jotai';
 import { parseUnits } from 'viem';
 
-import { InputBase } from '@mui/material';
+import { InputBase, Button } from '@mui/material';
 import { KeyboardBackspace } from '@mui/icons-material';
-import { LoadingButton } from '@mui/lab';
 
 import { activePageAtom } from '../index';
 import StoreListBg from '@assets/images/store-list-bg.png';
@@ -17,8 +16,7 @@ import Biscult from '@assets/images/biscult.png';
 import PowerIcon from '@assets/images/power.png';
 import { fedPet } from '@states/index';
 
-import { useFeedPetForFood, mechPetAddress } from '@abis/contracts/mechPet/MechContract';
-import { useApprove } from '@abis/contracts/xToken/XTokenContract';
+import { useFeedPetForFood } from '@abis/contracts/mechPet/MechContract';
 
 import './index.css';
 
@@ -37,22 +35,7 @@ function StoreDetailListItem({ row, index, data }) {
     setExp(allExp);
   }, [quantity]);
 
-  const { feedPetWithFood, error, isPending, isSuccess, hash } = useFeedPetForFood();
-  const {
-    approve,
-    error: approveError,
-    isPending: approvePending,
-    isSuccess: approveSuccess,
-    hash: approveHash,
-  } = useApprove();
-
-  console.log(approveHash, approvePending, approveSuccess);
-
-  useEffect(() => {
-    if (approveHash && (approveSuccess || !approvePending)) {
-      feedPetWithFood([parseUnits(totalPrice.toString(), 18), exp]);
-    }
-  }, [approvePending, approveSuccess, approveHash]);
+  const { feedPetWithFood, isPending, isSuccess, hash } = useFeedPetForFood();
 
   useEffect(() => {
     if (hash && (isSuccess || !isPending)) {
@@ -93,20 +76,19 @@ function StoreDetailListItem({ row, index, data }) {
       </span>
       <span className="list-item">{totalPrice}</span>
       <span className="list-item">
-        <LoadingButton
+        <Button
           size="small"
           variant="contained"
           className="text-black rounded-full font-bold"
           onClick={async () => {
             if (totalPrice !== 0) {
-              await approve([mechPetAddress, parseUnits(totalPrice.toString(), 18)]);
+              await feedPetWithFood([parseUnits(totalPrice.toString(), 18), exp]);
             }
           }}
-          loading={approveHash && (approvePending || !approveSuccess)}
           disabled={hash && (isSuccess || isPending)}
         >
           buy
-        </LoadingButton>
+        </Button>
       </span>
     </div>
   );

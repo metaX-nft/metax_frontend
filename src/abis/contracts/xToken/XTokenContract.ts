@@ -1,5 +1,6 @@
 import useSetContract from '@hooks/useSetContract';
 import { XTokenAbi, metaXTokenAddress } from './XTokenabi';
+import { useReadContract } from 'wagmi';
 
 export const useMintToken = () => {
   const { setContract: mintToken, error } = useSetContract({
@@ -38,4 +39,13 @@ export const useApprove = () => {
     functionName: 'approve',
   });
   return { approve, error, isPending, isSuccess, hash };
+};
+
+export const useGetBalance = () => {
+  const { data, error } = useReadContract({
+    abi: XTokenAbi,
+    functionName: 'getBalance',
+    address: metaXTokenAddress,
+  });
+  return { data, error };
 };

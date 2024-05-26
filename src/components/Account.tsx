@@ -92,46 +92,52 @@ export default function Account() {
         transformOrigin={{ horizontal: 'right', vertical: 'top' }}
         anchorOrigin={{ horizontal: 'right', vertical: 'bottom' }}
       >
-        {isConnected ? (
-          [
-            <MenuItem key="account">
-              <ListItemIcon>
-                {ensAvatar ? (
-                  <img
-                    className="h-[40px] w-[40px] rounded-full"
-                    alt="ENS Avatar"
-                    src={ensAvatar}
-                  />
-                ) : (
-                  <Jazzicon diameter={20} seed={jsNumberForAddress(address || '')} />
-                )}
-              </ListItemIcon>
-              {address && <ListItemText className="mr-5">{ellipsisHash(address)}</ListItemText>}
-              <ListItemIcon>
-                <CopyToClipboard text={address || ''} onCopy={handleControllerTip}>
-                  <ContentCopy />
-                </CopyToClipboard>
-              </ListItemIcon>
-            </MenuItem>,
-            <Divider key="divider" />,
-            <MenuItem key="discount" onClick={handleDisconnect}>
-              <ListItemIcon>
-                <LinkOff />
-              </ListItemIcon>
-              <ListItemText>Disconnect</ListItemText>
-            </MenuItem>,
-            <MenuItem key="logout" onClick={handleLogout}>
-              <ListItemIcon>
-                <Logout />
-              </ListItemIcon>
-              <ListItemText>Logout</ListItemText>
-            </MenuItem>,
-          ]
-        ) : (
-          <MenuItem>
-            <ConnectorWallect />
-          </MenuItem>
-        )}
+        {isConnected
+          ? [
+              <MenuItem key="account">
+                <ListItemIcon>
+                  {ensAvatar ? (
+                    <img
+                      className="h-[40px] w-[40px] rounded-full"
+                      alt="ENS Avatar"
+                      src={ensAvatar}
+                    />
+                  ) : (
+                    <Jazzicon diameter={20} seed={jsNumberForAddress(address || '')} />
+                  )}
+                </ListItemIcon>
+                {address && <ListItemText className="mr-5">{ellipsisHash(address)}</ListItemText>}
+                <ListItemIcon>
+                  <CopyToClipboard text={address || ''} onCopy={handleControllerTip}>
+                    <ContentCopy />
+                  </CopyToClipboard>
+                </ListItemIcon>
+              </MenuItem>,
+              <Divider key="divider" />,
+              <MenuItem key="discount" onClick={handleDisconnect}>
+                <ListItemIcon>
+                  <LinkOff />
+                </ListItemIcon>
+                <ListItemText>Disconnect</ListItemText>
+              </MenuItem>,
+              <MenuItem key="logout" onClick={handleLogout}>
+                <ListItemIcon>
+                  <Logout />
+                </ListItemIcon>
+                <ListItemText>Logout</ListItemText>
+              </MenuItem>,
+            ]
+          : [
+              <MenuItem key="connect">
+                <ConnectorWallect />
+              </MenuItem>,
+              <MenuItem key="logout" onClick={handleLogout}>
+                <ListItemIcon>
+                  <Logout />
+                </ListItemIcon>
+                <ListItemText>Logout</ListItemText>
+              </MenuItem>,
+            ]}
       </Menu>
     </>
   );
