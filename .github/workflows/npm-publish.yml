@@ -21,7 +21,7 @@ jobs:
           cache: 'npm'
       - name: Install dependencies
         run: npm ci
-        working-directory: ~/metax_frontend
+        working-directory: /home/ubuntu/metax_frontend
       - name: Restart PM2
         run: pm2 restart react-app
-        working-directory: ~/metax_frontend
+        working-directory: /home/ubuntu/metax_frontend
