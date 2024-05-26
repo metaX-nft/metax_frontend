@@ -19,5 +19,9 @@ jobs:
         with:
           node-version: ${{ matrix.node-version }}
           cache: 'npm'
-      - run: npm ci
-      - run: pm2 restart react-app
+      - name: Install dependencies
+        run: npm ci
+        working-directory: ~/metax_frontend
+      - name: Restart PM2
+        run: pm2 restart react-app
+        working-directory: ~/metax_frontend
