@@ -1,17 +1,86 @@
-import * as React from 'react';
+import { useEffect, memo, useState } from 'react';
+import { useAccount, useBalance } from 'wagmi';
+import { parseUnits } from 'viem';
+import { atom, useAtom } from 'jotai';
 
+import { Button } from '@mui/material';
 import TaskList from './TaskList';
 import NFTbody from './Nft';
 import Store from './Store';
 import Pagination from './Pagination';
 import StoreDetailPage from './StoreDetailPage';
 import NextPageIcon from '@assets/images/galley-nextpage.svg';
-import { atom, useAtom } from 'jotai';
+
+import ConnectorWallect from '@components/Connector';
+import { metaXTokenAddress } from '@abis/contracts/xToken/XTokenabi';
+import { useApprove } from '@abis/contracts/xToken/XTokenContract';
+import { usePetId, useClaimFreePet, mechPetAddress } from '@abis/contracts/mechPet/MechContract';
+import { BigNumber } from '@ethersproject/bignumber';
+import globalStore from '@states/global';
 
 export const activePageAtom = atom('1');
 
-const FirstPage = React.memo(() => {
+const FirstPage = memo(() => {
   const [_, setActivePage] = useAtom(activePageAtom);
+  const [petIdNumber, setPetIdNumber] = useState(0);
+  const { user, updateUser } = globalStore(state => {
+    return { user: state.user, updateUser: state.updateUser };
+  });
+
+  const { id: petId } = usePetId();
+  const { claimFreePet, error: claimError, isPending, isSuccess, hash } = useClaimFreePet();
+
+  useEffect(() => {
+    const petIdToNumber = BigNumber.from(petId).toNumber();
+    setPetIdNumber(petIdToNumber);
+  }, [petId]);
+
+  const { isConnected, status, address } = useAccount();
+
+  const handleClaimFreePet = async () => {
+    await claimFreePet();
+  };
+
+  const { approve, error: approveError } = useApprove();
+
+  const { data: tokenBalance, error: tokenError } = useBalance({
+    token: metaXTokenAddress,
+    scopeKey: 'xtoken',
+    address,
+  });
+
+  const handleApprove = async () => {
+    if (tokenBalance) {
+      await approve([mechPetAddress, tokenBalance.value]);
+      updateUser({ wallectIsApprove: true });
+    }
+  };
+
+  useEffect(() => {
+    if (status === 'connected' && !user.wallectIsApprove) {
+      handleApprove();
+    }
+  }, [status, tokenBalance]);
+
+  if (petIdNumber <= 0) {
+    return (
+      <div className="w-full h-full flex flex-col justify-center">
+        <Button
+          className="w-30 h-10 mx-auto text-[24px]"
+          variant="text"
+          onClick={handleClaimFreePet}
+          disabled={(hash && (isPending || !isSuccess)) || !isConnected}
+        >
+          Claim Pet
+        </Button>
+        {!isConnected && (
+          <div className="text-center text-[18px] mt-2 text-gray-200">
+            Please <ConnectorWallect /> first
+          </div>
+        )}
+      </div>
+    );
+  }
 
   return (
     <div className="w-full h-full flex flex-col justify-center">
@@ -20,21 +89,21 @@ const FirstPage = React.memo(() => {
           <TaskList />
         </div>
         <div>
-          <NFTbody />
+          <NFTbody petId={BigInt(petIdNumber)} />
         </div>
         <div style={{ marginLeft: '7rem' }}>
           <Store />
         </div>
       </div>
-      <div className="flex justify-center mt-[73px] cursor-pointer">
+      {/* <div className="flex justify-center mt-[73px] cursor-pointer">
         <img src={NextPageIcon} onClick={() => setActivePage('2')} />
-      </div>
+      </div> */}
     </div>
   );
 });
 
-const SecondPage = React.memo(() => {
-  const [tableData, setTableData] = React.useState([
+const SecondPage = memo(() => {
+  const [tableData, setTableData] = useState([
     {
       date: '2023-8-12',
       token: 'usdc',
@@ -95,7 +164,7 @@ const SecondPage = React.memo(() => {
   const [_, setActivePage] = useAtom(activePageAtom);
 
   const columns = Object.keys(tableData[0]);
-  const [current, setCurrent] = React.useState(1);
+  const [current, setCurrent] = useState(1);
 
   return (
     <div className="w-full h-full flex flex-col ">
@@ -141,9 +210,10 @@ const SecondPage = React.memo(() => {
   );
 });
 
-const Galley = React.memo(() => {
+const Galley = memo(() => {
   const [activePage, setActivePage] = useAtom(activePageAtom);
-  React.useEffect(() => {
+
+  useEffect(() => {
     if (activePage !== '1') {
       setActivePage('1');
     }

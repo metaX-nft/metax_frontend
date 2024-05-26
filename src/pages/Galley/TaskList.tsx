@@ -2,13 +2,34 @@ import * as React from 'react';
 
 import GalleyTaskBg from '@assets/images/gallary-task-list.png';
 import TaskListIcon from '@assets/images/task-list-icon.svg';
-import TaskItemImg from '@assets/images/task-item-img.svg';
+// import TaskItemImg from '@assets/images/task-item-img.svg';
+import TaskItemImg from '@assets/images/chainlink-icon.png';
+import { useGrowPet } from '@abis/contracts/mechPet/MechContract';
+import { Button } from '@mui/material';
+import { useAtom } from 'jotai';
+import { fedPet } from '@states/index';
 
 const TaskItem = React.memo(
   ({ icon, title, url }: { icon: string; title: string; url: string }) => {
+    const [isActive, setIsActive] = React.useState(false);
+    const [_, setFedPet] = useAtom(fedPet);
+    const { growPet, isSuccess, hash, isPending } = useGrowPet();
+
     const goX = (link: string) => {
       window.open(link, '_blank');
+      setIsActive(true);
     };
+
+    const handleGrowPet = async () => {
+      await growPet([BigInt(200)]);
+      setFedPet(true);
+    };
+
+    React.useEffect(() => {
+      if (hash && !isPending && isSuccess) {
+        setFedPet(false);
+      }
+    }, [hash, isSuccess, isPending]);
 
     return (
       <div
@@ -18,14 +39,29 @@ const TaskItem = React.memo(
             'linear-gradient(90deg, rgba(20, 196, 128, 0.1) 0%, rgba(10, 94, 61, 0.1) 100%)',
         }}
       >
-        <img className="rounded-full" src={icon} />
+        <img className="w-[40px] h-[40px] rounded-full mr-5" src={icon} />
         <span className="flex-1 truncate text-white">{title}</span>
-        <button
-          className="rounded-full bg-[#47E49F] text-[#134631] px-[15px] py-[9px]"
-          onClick={() => goX(url)}
-        >
-          To finish
-        </button>
+        {isActive ? (
+          <Button
+            className="rounded-full"
+            onClick={handleGrowPet}
+            style={{ textTransform: 'initial' }}
+            variant="contained"
+            color="warning"
+            disabled={hash && (isSuccess || isPending)}
+          >
+            To claim
+          </Button>
+        ) : (
+          <Button
+            className="rounded-full  text-[#134631]"
+            onClick={() => goX(url)}
+            style={{ textTransform: 'initial' }}
+            variant="contained"
+          >
+            To finish
+          </Button>
+        )}
       </div>
     );
   },
@@ -35,21 +71,21 @@ const TaskList = React.memo(() => {
   const task = [
     {
       icon: TaskItemImg,
-      title: 'Follow @chainlink',
+      title: 'Follow @chainlink on X',
       accountId: '63727313',
       url: 'https://twitter.com/chainlink',
     },
     {
       icon: TaskItemImg,
-      title: 'Follow @CoinMarketCap',
+      title: 'Subscribe Chainlink on YouTube',
       accountId: '483472302',
-      url: 'https://twitter.com/CoinMarketCap',
+      url: 'https://www.youtube.com/channel/UCnjkrlqaWEBSnKZQ71gdyFA',
     },
     {
       icon: TaskItemImg,
-      title: 'Follow @Binance',
+      title: 'GM on ChainlinkDiscord',
       accountId: '3274824',
-      url: 'https://twitter.com/binance',
+      url: 'https://discord.com/channels/592041321326182401/605768708266131456',
     },
   ];
 

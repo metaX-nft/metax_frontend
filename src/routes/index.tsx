@@ -6,24 +6,25 @@ import Galley from '@pages/Galley/index';
 import Winjoy from '@pages/Winjoy';
 import Vault from '@pages/Vault';
 import Ranking from '@pages/Ranking';
-
+import Demo from '@pages/Demo';
 const Routes: RouteObject[] = [
   {
     path: '/',
     element: (
-      <Suspense>
+      <Suspense fallback={<div>loading ....</div>}>
         <MainLayout />
       </Suspense>
     ),
     children: [
-      { path: 'galley', index: true, element: <Galley /> },
+      { path: 'galley', element: <Galley /> },
+      { path: 'Stake', element: <Vault /> },
       { path: 'winjoy', element: <Winjoy /> },
-      { path: 'vault', element: <Vault /> },
-      { path: 'ranking', element: <Ranking /> },
-      {
-        index: true,
-        element: <Navigate to="/galley" replace />,
-      },
+      // { path: 'ranking', element: <Ranking /> },
+      // { path: 'demo', element: <Demo /> },
+      // {
+      //   index: true,
+      //   element: <Navigate to="/galley" replace />,
+      // },
     ],
   },
   {

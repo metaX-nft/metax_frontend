@@ -1,0 +1,29 @@
+.accountButton {
+  background: linear-gradient(145deg, #0d0d0d, #1a1a1a);
+  width: 200px;
+  height: 65px;
+  border-radius: 20px;
+  box-shadow:
+    0 0 20px #00ff88,
+    0 0 40px #00ff88 inset;
+  color: white;
+  position: relative;
+  display: flex;
+  justify-content: center;
+}
+.accountButton::before {
+  content: '';
+  position: absolute;
+  top: -2px;
+  left: -2px;
+  right: -2px;
+  bottom: -2px;
+  border-radius: 20px;
+  background: linear-gradient(145deg, #0d0d0d, #1a1a1a);
+  z-index: 0;
+  box-shadow: 0 0 20px #00ff88;
+}
+.accountButton::after {
+  content: '';
+  position: absolute;
+}

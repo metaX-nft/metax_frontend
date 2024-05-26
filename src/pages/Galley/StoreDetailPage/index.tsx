@@ -1,6 +1,8 @@
-import { useState, useCallback, useRef } from 'react';
+import { useState, useCallback, useEffect } from 'react';
 import { useAtom } from 'jotai';
-import { Button, InputBase } from '@mui/material';
+import { parseUnits } from 'viem';
+
+import { InputBase, Button } from '@mui/material';
 import { KeyboardBackspace } from '@mui/icons-material';
 
 import { activePageAtom } from '../index';
@@ -12,12 +14,35 @@ import DrinkIcon from '@assets/images/drink.png';
 import CandyIcon from '@assets/images/candy.png';
 import Biscult from '@assets/images/biscult.png';
 import PowerIcon from '@assets/images/power.png';
+import { fedPet } from '@states/index';
+
+import { useFeedPetForFood } from '@abis/contracts/mechPet/MechContract';
 
 import './index.css';
 
 function StoreDetailListItem({ row, index, data }) {
-  const { picture, name, price, feature, totalPrice } = row;
-  const input = useRef<HTMLInputElement>(null);
+  const { picture, name, price, feature } = row;
+  const [totalPrice, setTotalPrice] = useState(0);
+  const [quantity, setQuantity] = useState(0);
+  const [exp, setExp] = useState(0);
+  const [_, setFedPet] = useAtom(fedPet);
+  const [activePage, setActivePage] = useAtom(activePageAtom);
+
+  useEffect(() => {
+    const allPrice = quantity * price;
+    setTotalPrice(allPrice);
+    const allExp = feature * quantity;
+    setExp(allExp);
+  }, [quantity]);
+
+  const { feedPetWithFood, isPending, isSuccess, hash } = useFeedPetForFood();
+
+  useEffect(() => {
+    if (hash && (isSuccess || !isPending)) {
+      setFedPet(false);
+      setActivePage('1');
+    }
+  }, [hash, isSuccess, isPending]);
 
   return (
     <div
@@ -37,9 +62,17 @@ function StoreDetailListItem({ row, index, data }) {
       </span>
       <span className="list-item">{name}</span>
       <span className="list-item">{price}</span>
-      <span className="list-item">+{feature}</span>
+      <span className="list-item">+{feature} exp</span>
       <span className="list-item">
-        <InputBase inputRef={input} inputProps={{ min: 0 }} defaultValue={0} type="number" />
+        <InputBase
+          inputProps={{ min: 0 }}
+          defaultValue={0}
+          type="number"
+          className="font-bold text-lg"
+          onChange={(e: React.ChangeEvent<HTMLInputElement>) => {
+            setQuantity(Number(e.target.value));
+          }}
+        />
       </span>
       <span className="list-item">{totalPrice}</span>
       <span className="list-item">
@@ -47,9 +80,12 @@ function StoreDetailListItem({ row, index, data }) {
           size="small"
           variant="contained"
           className="text-black rounded-full font-bold"
-          onClick={() => {
-            console.log(input?.current?.value);
+          onClick={async () => {
+            if (totalPrice !== 0) {
+              await feedPetWithFood([parseUnits(totalPrice.toString(), 18), exp]);
+            }
           }}
+          disabled={hash && (isSuccess || isPending)}
         >
           buy
         </Button>
@@ -83,28 +119,28 @@ export default function StoreDetailPage() {
       picture: VegtableIcon,
       name: 'Vegtable',
       price: '0.002',
-      feature: '5 exp',
+      feature: '5',
       totalPrice: '0.006',
     },
     {
       picture: DrinkIcon,
       name: 'Drink',
       price: '0.04',
-      feature: '60 exp',
+      feature: '60',
       totalPrice: '0',
     },
     {
       picture: CandyIcon,
       name: 'Candy',
       price: '0.1',
-      feature: '230 exp',
+      feature: '230',
       totalPrice: '0',
     },
     {
       picture: Biscult,
       name: 'Biscult',
       price: '0.3',
-      feature: '680 exp',
+      feature: '680',
       totalPrice: '0',
     },
     {

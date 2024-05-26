@@ -1,7 +1,16 @@
 import { create } from 'zustand';
 
 type GlobalType = {
-  user: { signer?: string; chainId?: string; accounts?: string; xAccount?: string };
+  user: {
+    signer?: string;
+    chainId?: string;
+    address?: string;
+    xAccount?: string;
+    xAvatar?: string;
+    xId?: string;
+    petId?: number;
+    wallectIsApprove: boolean;
+  };
   themeMode: 'light' | 'dark';
 };
 
@@ -14,8 +23,9 @@ type GlobalAction = {
 };
 
 const globalStore = create<GlobalType & GlobalAction>()(set => ({
-  user: {},
+  user: { wallectIsApprove: false },
   themeMode: 'dark',
+
   updateUser: newData => set(state => ({ user: { ...state.user, ...newData } })),
   resetUser: () => set(() => ({})),
   toggleColorMode: () =>

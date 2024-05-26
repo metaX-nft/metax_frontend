@@ -1,61 +1,54 @@
-import { CopyToClipboard } from 'react-copy-to-clipboard';
-import { Button, Tooltip } from '@mui/material';
-import { FC, useState } from 'react';
-import { supportedNetworks, ellipsisHash } from '@utils/index';
-import Jazzicon, { jsNumberForAddress } from 'react-jazzicon';
+import { useState, useEffect } from 'react';
+import { Button } from '@mui/material';
 
-interface Props {
-  chainId: string | undefined;
-  account: string | undefined;
-  onConnect: () => Promise<void>;
-  onChangeNetwork: (chainId: string) => Promise<void>;
-}
+import { useChainId, Connector, useConnect, useAccount } from 'wagmi';
+import useMetaMask from '@hooks/useMetaMask';
+import globalStore from '@states/global';
 
-const Connector: FC<Props> = ({ chainId, account, onConnect, onChangeNetwork }) => {
-  const [connectLoading, setConnectLoading] = useState(false);
-  const [open, setOpen] = useState(false);
+export default function ConnectorWallect() {
+  const [ready, setReady] = useState(false);
 
-  const handleConnect = async () => {
-    setConnectLoading(true);
-    await onConnect();
-    await onChangeNetwork(supportedNetworks[0].chainId);
-    setConnectLoading(false);
-  };
+  const { connect } = useConnect();
+  const chainId = useChainId();
+  const { address } = useAccount();
+
+  const metamask: Connector = useMetaMask();
+  const updateUser = globalStore(state => state.updateUser);
+
+  useEffect(() => {
+    if (metamask) {
+      (async () => {
+        const provider = await metamask.getProvider();
+        setReady(!!provider);
+      })();
+    }
+  }, [metamask]);
 
   if (!window.ethereum || !window.ethereum.isMetaMask) {
     return (
-      <Button variant="contained" href="https://home.metamask.io/" target="_blank">
-        安装 MetaMask
+      <Button variant="text" href="https://home.metamask.io/" target="_blank">
+        Install MetaMask
       </Button>
     );
   }
 
-  if (account === undefined) {
-    return (
-      <Button variant="contained" onClick={handleConnect}>
-        连接
-      </Button>
+  const handleConnectWallect = async () => {
+    await connect(
+      { connector: metamask, chainId },
+      {
+        onError(error, variables, context) {
+          console.log(error);
+        },
+        onSuccess: function () {
+          updateUser({ address: address, chainId: chainId });
+        },
+      },
     );
-  }
-
-  const handleControllerTip = () => {
-    setOpen(open ? false : true);
   };
 
   return (
-    <>
-      <Tooltip title="已复制" placement="bottom" open={open} onClose={handleControllerTip}>
-        <span>
-          <CopyToClipboard text={account} onCopy={handleControllerTip}>
-            <span className="flex items-center">
-              <Jazzicon diameter={20} seed={jsNumberForAddress(account)} />
-              <span className="ml-5">{ellipsisHash(account)}</span>
-            </span>
-          </CopyToClipboard>
-        </span>
-      </Tooltip>
-    </>
+    <Button variant="text" disabled={!ready} onClick={handleConnectWallect}>
+      Connect Wallect
+    </Button>
   );
-};
-
-export default Connector;
+}
