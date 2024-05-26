@@ -18,7 +18,7 @@ jobs:
         run: |
             git pull origin main
             git merge origin/main --no-edit
-          working-directory: /home/ubuntu/metax_frontend
+        working-directory: /home/ubuntu/metax_frontend
       - name: Use Node.js ${{ matrix.node-version }}
         uses: actions/setup-node@v3
         with:
