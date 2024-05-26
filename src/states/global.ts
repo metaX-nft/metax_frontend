@@ -9,7 +9,7 @@ type GlobalType = {
     xAvatar?: string;
     xId?: string;
     petId?: number;
-    wallectIsApprove: boolean;
+    wallectIsApprove?: boolean;
   };
   themeMode: 'light' | 'dark';
 };
