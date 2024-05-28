@@ -31,6 +31,10 @@ const ContentLayout = () => {
           });
           localStorage.setItem('xId', twId);
           navigate('/galley');
+        })
+        .catch(error => {
+          navigate('/login');
+          localStorage.removeItem('xId');
         });
     } else {
       navigate('/login');

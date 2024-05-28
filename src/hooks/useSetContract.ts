@@ -23,7 +23,7 @@ const useSetContract = ({
 
   const { data: transactionHash, writeContract, error } = useWriteContract();
 
-  const setContract = useCallback(async (args?: unknown[]) => {
+  const setContract = useCallback(async (args?: unknown[], res?: {}) => {
     // setPending(true);
     // setSuccess(false);
     // setError(null);
@@ -33,6 +33,7 @@ const useSetContract = ({
       functionName,
       address: abiAddress,
       args,
+      ...res,
     });
 
     // try {
