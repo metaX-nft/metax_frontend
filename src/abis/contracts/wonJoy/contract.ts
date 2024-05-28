@@ -1,68 +1,56 @@
 import { parseUnits, parseEther } from 'viem';
-import { useReadContract, useWriteContract, useWaitForTransactionReceipt, useSendTransaction } from 'wagmi'
+import {
+  useReadContract,
+  useWriteContract,
+  useWaitForTransactionReceipt,
+  useSendTransaction,
+} from 'wagmi';
 
 import winJoyAbi from './abi';
 import { useApprove } from '@abis/contracts/xToken/XTokenContract';
 import { useEffect } from 'react';
+import useSetContract from '@hooks/useSetContract';
 
-const contractAddress = '0xDc64a140Aa3E981100a9becA4E685f962f0cF6C9' as '0x${string}';
+const contractAddress = process.env.WONJOY_ADDRESS as '0x${string}';
 
 export function useGetJoyResult() {
   const { data: result } = useReadContract({
     abi: winJoyAbi,
     functionName: 'getLuckyTicketId',
     address: contractAddress,
-  })
+  });
 
-  return { result }
+  return { result };
 }
 
 export function useJoinJoy() {
   const {
-    approve,
-    error: approveError,
-    isPending: approvePending,
-    isSuccess: approveSuccess,
-    hash: approveHash,
-  } = useApprove();
-
-  const { sendTransactionAsync, data, error } = useSendTransaction({})
-  const { isLoading, isSuccess, isLoading: isConfirming } = useWaitForTransactionReceipt({
-    hash: data,
-  })
-
-  const buyATicket = async () => {
-    await approve([contractAddress, parseUnits('1', 18)])
-  }
-
-  useEffect(() => {
-    if (approveHash) {
-      sendTransactionAsync({
-        to: contractAddress,
-        value: parseEther('0.0001'),
-      })
-    }
-  }, [approveHash])
+    setContract: buyATicket,
+    error,
+    isPending,
+    isSuccess,
+    hash,
+  } = useSetContract({
+    address: contractAddress,
+    abi: winJoyAbi,
+    functionName: 'buyTicket',
+  });
 
   return {
-    approveError,
-    approvePending,
-    approveSuccess,
-    approveHash,
     error,
     buyATicket,
-    isLoading,
+    isPending,
     isSuccess,
-    isConfirming,
-  }
+    hash,
+  };
 }
 
 export function useClaimResult() {
   const { data: hash, error, isPending, writeContract } = useWriteContract();
 
   const { isLoading: isConfirming, isSuccess: isConfirmed } = useWaitForTransactionReceipt({
-    hash
-  })
+    hash,
+  });
 
   const winnerResult = () => {
     writeContract({
@@ -70,14 +58,14 @@ export function useClaimResult() {
       abi: winJoyAbi,
       functionName: 'claim',
       args: [],
-    })
-  }
+    });
+  };
 
   return {
     isPending,
     winnerResult,
     isConfirming,
     isConfirmed,
-    error
-  }
+    error,
+  };
 }
