@@ -17,7 +17,6 @@ import RightCoins2 from '@assets/images/right-coins-2.svg';
 import RightCoins3 from '@assets/images/right-coins-3.svg';
 import RightCoins4 from '@assets/images/right-coins-4.svg';
 import { BigNumber } from '@ethersproject/bignumber';
-import { parseEther } from 'viem';
 
 const WinJoy = React.memo(() => {
   const { address } = useAccount();
@@ -38,7 +37,7 @@ const WinJoy = React.memo(() => {
   const { winnerResult, isConfirming: isGetting, isConfirmed: getSuccess } = useClaimResult();
 
   const handleByTicket = async () => {
-    await buyATicket([], { value: parseEther('0.0001'), token: 'XToken' });
+    await buyATicket();
   };
 
   const handleSorryOrClaim = () => {
@@ -67,7 +66,8 @@ const WinJoy = React.memo(() => {
   const claimText = isGetting ? 'claiming...' : 'claim';
 
   const buttonClass =
-    'w-[263px] h-[64px] mt-[61px] text-[#47E49F] font-[24px] leading-[29px] rounded-[38px] border-[2px] border-[#47E49F]';
+    'w-[263px] h-[64px] mt-[61px] text-[#47E49F] font-[24px] leading-[29px] rounded-[38px] border-[2px] border-[#47E49F] disabled:text-[#888] disabled:border-[#888]';
+
   return (
     <div className="w-full h-full relative flex justify-center items-center">
       <img src={LeftCoins1} className="absolute left-[64px] top-[72px] w-[173px] h-[139px]" />
@@ -97,7 +97,7 @@ const WinJoy = React.memo(() => {
           </button>
         ) : hasJoin ? (
           <button className={buttonClass} disabled>
-            waiting result...
+            Register
           </button>
         ) : (
           <button
