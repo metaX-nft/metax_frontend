@@ -1,29 +1,24 @@
-import { parseUnits, parseEther } from 'viem';
-import {
-  useReadContract,
-  useWriteContract,
-  useWaitForTransactionReceipt,
-  useSendTransaction,
-} from 'wagmi';
+import { useReadContract, useWriteContract, useWaitForTransactionReceipt, useAccount } from 'wagmi';
 
 import winJoyAbi from './abi';
-import { useApprove } from '@abis/contracts/xToken/XTokenContract';
-import { useEffect } from 'react';
+
 import useSetContract from '@hooks/useSetContract';
 
-const contractAddress = process.env.WONJOY_ADDRESS as '0x${string}';
+export const wonjoyAddress = process.env.WONJOY_ADDRESS as '0x${string}';
 
 export function useGetJoyResult() {
   const { data: result } = useReadContract({
     abi: winJoyAbi,
     functionName: 'getLuckyTicketId',
-    address: contractAddress,
+    address: wonjoyAddress,
   });
 
   return { result };
 }
 
 export function useJoinJoy() {
+  const { address: wallectAddress } = useAccount();
+
   const {
     setContract: buyATicket,
     error,
@@ -31,9 +26,10 @@ export function useJoinJoy() {
     isSuccess,
     hash,
   } = useSetContract({
-    address: contractAddress,
+    address: wonjoyAddress,
     abi: winJoyAbi,
     functionName: 'buyTicket',
+    account: wallectAddress,
   });
 
   return {
@@ -54,7 +50,7 @@ export function useClaimResult() {
 
   const winnerResult = () => {
     writeContract({
-      address: contractAddress,
+      address: wonjoyAddress,
       abi: winJoyAbi,
       functionName: 'claim',
       args: [],

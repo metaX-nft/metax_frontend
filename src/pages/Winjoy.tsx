@@ -2,11 +2,16 @@ import * as React from 'react';
 import { useEffect, useState } from 'react';
 import moment from 'moment';
 import FlipCountdown from '@rumess/react-flip-countdown';
-import { useAccount } from 'wagmi';
+import { useAccount, useBalance } from 'wagmi';
 
 import winJoyBg from '@assets/images/winJoy-bg.png';
 
-import { useGetJoyResult, useJoinJoy, useClaimResult } from '@abis/contracts/wonJoy/contract';
+import {
+  useGetJoyResult,
+  useJoinJoy,
+  useClaimResult,
+  wonjoyAddress,
+} from '@abis/contracts/wonJoy/contract';
 // images
 import LeftCoins1 from '@assets/images/left-coins-1.svg';
 import LeftCoins2 from '@assets/images/left-coins-2.svg';
@@ -17,12 +22,15 @@ import RightCoins2 from '@assets/images/right-coins-2.svg';
 import RightCoins3 from '@assets/images/right-coins-3.svg';
 import RightCoins4 from '@assets/images/right-coins-4.svg';
 import { BigNumber } from '@ethersproject/bignumber';
+import { metaXTokenAddress } from '@abis/contracts/xToken/XTokenabi';
+import { useApprove } from '@abis/contracts/xToken/XTokenContract';
 
 const WinJoy = React.memo(() => {
   const { address } = useAccount();
   const today = moment(new Date());
   const nextDay = moment(today).add(1, 'day');
   const isBeforeTodayResultDate = today.isBefore(`${today.format('YYYY-MM-DD')} 12:00:00`);
+  const [isApprove, setApprove] = useState(false);
 
   // get raffle result
   const { result } = useGetJoyResult();
@@ -62,6 +70,36 @@ const WinJoy = React.memo(() => {
       setHasJoin(false);
     }
   }, [getSuccess]);
+
+  const {
+    approve,
+    error: approveError,
+    hash: approveHash,
+    isPending: approvePending,
+    isSuccess: approveSuccess,
+  } = useApprove();
+
+  const { data: tokenBalance, error: tokenError } = useBalance({
+    token: metaXTokenAddress,
+    scopeKey: 'xtoken',
+    address,
+  });
+
+  const handleApprove = async () => {
+    if (tokenBalance && !isApprove) {
+      await approve([wonjoyAddress, tokenBalance.value]);
+    }
+  };
+
+  useEffect(() => {
+    if (approveHash && (approvePending || approveSuccess)) {
+      setApprove(true);
+    }
+  }, [approveHash, approvePending, approveSuccess]);
+
+  useEffect(() => {
+    handleApprove();
+  }, []);
 
   const claimText = isGetting ? 'claiming...' : 'claim';
 
@@ -103,7 +141,7 @@ const WinJoy = React.memo(() => {
           <button
             className={buttonClass}
             onClick={handleByTicket}
-            disabled={hash && (isPending || isSuccess)}
+            disabled={!isApprove || (hash && (isPending || isSuccess))}
           >
             {isPending ? 'loading...' : isSuccess ? 'confirming...' : 'Register'}
           </button>
