@@ -1,6 +1,5 @@
 import { useEffect, memo, useState } from 'react';
 import { useAccount, useBalance } from 'wagmi';
-import { parseUnits } from 'viem';
 import { atom, useAtom } from 'jotai';
 
 import { Button } from '@mui/material';
@@ -37,7 +36,7 @@ const FirstPage = memo(() => {
 
   const { isConnected, status, address } = useAccount();
 
-  const handleClaimFreePet = async (petType: string) => {
+  const handleClaimFreePet = async (petType: number) => {
     await claimFreePet([petType]);
   };
 
@@ -69,7 +68,7 @@ const FirstPage = memo(() => {
           <Button
             className="w-30 h-10 text-[24px]"
             variant="text"
-            onClick={() => handleClaimFreePet('1')}
+            onClick={() => handleClaimFreePet(0)}
             disabled={(hash && (isPending || !isSuccess)) || !isConnected}
           >
             Claim Pet type 1
@@ -77,7 +76,7 @@ const FirstPage = memo(() => {
           <Button
             className="w-30 h-10 text-[24px]"
             variant="text"
-            onClick={() => handleClaimFreePet('2')}
+            onClick={() => handleClaimFreePet(1)}
             disabled={(hash && (isPending || !isSuccess)) || !isConnected}
           >
             Claim Pet type 2

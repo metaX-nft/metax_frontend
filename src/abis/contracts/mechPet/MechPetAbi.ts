@@ -401,7 +401,13 @@ const MechPetAbi = [
     type: 'function',
   },
   {
-    inputs: [],
+    inputs: [
+      {
+        internalType: 'enum MechPet.PetType',
+        name: 'petType',
+        type: 'uint8',
+      },
+    ],
     name: 'claimFreePet',
     outputs: [],
     stateMutability: 'nonpayable',
@@ -584,6 +590,25 @@ const MechPetAbi = [
     type: 'function',
   },
   {
+    inputs: [
+      {
+        internalType: 'uint256',
+        name: '',
+        type: 'uint256',
+      },
+    ],
+    name: 'nextValidFeedWithX',
+    outputs: [
+      {
+        internalType: 'uint256',
+        name: '',
+        type: 'uint256',
+      },
+    ],
+    stateMutability: 'view',
+    type: 'function',
+  },
+  {
     inputs: [],
     name: 'owner',
     outputs: [
@@ -653,9 +678,9 @@ const MechPetAbi = [
   {
     inputs: [
       {
-        internalType: 'uint256',
-        name: 'tokenId',
-        type: 'uint256',
+        internalType: 'address',
+        name: 'owner',
+        type: 'address',
       },
     ],
     name: 'reset',
@@ -837,19 +862,6 @@ const MechPetAbi = [
     name: 'withdrawXToken',
     outputs: [],
     stateMutability: 'nonpayable',
-    type: 'function',
-  },
-  {
-    inputs: [],
-    name: 'xToken',
-    outputs: [
-      {
-        internalType: 'contract IERC20',
-        name: '',
-        type: 'address',
-      },
-    ],
-    stateMutability: 'view',
     type: 'function',
   },
 ] as const;
