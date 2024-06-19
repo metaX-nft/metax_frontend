@@ -37,8 +37,8 @@ const FirstPage = memo(() => {
 
   const { isConnected, status, address } = useAccount();
 
-  const handleClaimFreePet = async () => {
-    await claimFreePet();
+  const handleClaimFreePet = async (petType: string) => {
+    await claimFreePet([petType]);
   };
 
   const { approve, error: approveError } = useApprove();
@@ -65,14 +65,24 @@ const FirstPage = memo(() => {
   if (petIdNumber <= 0) {
     return (
       <div className="w-full h-full flex flex-col justify-center">
-        <Button
-          className="w-30 h-10 mx-auto text-[24px]"
-          variant="text"
-          onClick={handleClaimFreePet}
-          disabled={(hash && (isPending || !isSuccess)) || !isConnected}
-        >
-          Claim Pet
-        </Button>
+        <div className="flex justify-center">
+          <Button
+            className="w-30 h-10 text-[24px]"
+            variant="text"
+            onClick={() => handleClaimFreePet('1')}
+            disabled={(hash && (isPending || !isSuccess)) || !isConnected}
+          >
+            Claim Pet type 1
+          </Button>
+          <Button
+            className="w-30 h-10 text-[24px]"
+            variant="text"
+            onClick={() => handleClaimFreePet('2')}
+            disabled={(hash && (isPending || !isSuccess)) || !isConnected}
+          >
+            Claim Pet type 2
+          </Button>
+        </div>
         {!isConnected && (
           <div className="text-center text-[18px] mt-2 text-gray-200">
             Please <ConnectorWallect /> first

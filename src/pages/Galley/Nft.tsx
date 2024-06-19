@@ -24,11 +24,13 @@ const expLimitMapper = [
   { limit: 3000, base: 1500, lv: 5 },
 ];
 
+const less20Radom = () => Math.floor(Math.random() * 21);
+
 const XContent = React.memo(() => {
   const XDataDemo = [
-    { icon: XThumb, current: 12, need: 20 },
-    { icon: XCommunity, current: 12, need: 20 },
-    { icon: XStart, current: 12, need: 20 },
+    { icon: XThumb, current: less20Radom(), need: 20 },
+    { icon: XCommunity, current: less20Radom(), need: 20 },
+    { icon: XStart, current: less20Radom(), need: 20 },
   ];
   const [_, setFedPet] = useAtom(fedPet);
 

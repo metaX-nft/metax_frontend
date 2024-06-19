@@ -1,45 +1,35 @@
 import Logo from '@components/Logo';
-import LoginMid from '@assets/images/login_mid.png';
-import LoginBg from '@assets/images/bg.png';
+import MiddleImg from '@assets/images/new-login-mid.png';
+import LeftTopIcon from '@assets/images/login-lt.png';
+import LeftBottomIcon from '@assets/images/login-lb.png';
+import RightTopIcon from '@assets/images/login-rt.png';
+import RightBottomIcon from '@assets/images/login-rb.png';
 
-import { ArrowRightAlt } from '@mui/icons-material';
 const HTTPURL = process.env.HTTPURL;
 
 const LoginPage = () => {
   return (
-    <div className="bg-main overflow-hidden ">
+    <div className="bg-main overflow-hidden" style={{ backgroundColor: '#000' }}>
       <div className="min-h-screen relative">
         <div className="mt-10 ml-44 inline-block">
           <Logo />
         </div>
-        <div
-          className="absolute -left-[25rem] bottom-10 backdrop-blur-md w-[35rem]  h-[35rem] rounded-full"
-          style={{
-            background: 'radial-gradient(circle at center,rgba(22, 212, 153, 0.5), transparent)',
-            filter: 'blur(200px)',
-          }}
-        ></div>
-        <div
-          className="absolute -right-[25rem] top-10 w-[35rem]  h-[35rem] rounded-full"
-          style={{
-            background: 'radial-gradient(circle at center,rgba(22, 212, 153, 0.5), transparent)',
-            filter: 'blur(200px)',
-          }}
-        ></div>
-        <div className="text-center mt-20 lg:pb-12 desktop:pb-0 relative z-10">
-          <p className="text-white text-5xl font-bold text-center ">
-            Empower digital asset <span className="text-primary">with X</span>
-          </p>
+        <img src={MiddleImg} className="absolute left-1/2 top-[12%] -translate-x-1/2" />
+        <div className="absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2">
+          <p className="text-white text-8xl font-bold text-center ">Welcome to metaX</p>
+          <p className="text-white text-2xl text-center mt-2">Nourish with Interactive X</p>
           <a
             href={`${HTTPURL}/auth/twitter`}
-            className="flex w-[266px] h-[72px] mt-10 mx-auto rounded-full font-normal bg-gradient-to-r from-gradient-from to-gradient-to text-xl items-center justify-center hover:from-gradient-to hover:to-gradient-to transition-all hover:transition-all"
+            className="flex w-[280px] h-[72px] px-[72px] py-[16px] mt-[64px] mx-auto rounded-full font-normal bg-gradient-to-r from-gradient-from to-gradient-to text-xl items-center justify-center hover:from-gradient-to hover:to-gradient-to transition-all hover:transition-all"
           >
-            <span className="mr-5">Connect X</span>
-            <ArrowRightAlt />
+            <span className="font-bold">login with X</span>
           </a>
-          <img className="mt-8 mx-auto relative z-10 w-[44rem]" src={LoginMid} />
         </div>
-        <img className="absolute bottom-0 w-screen left-[2px]" src={LoginBg} />
+
+        <img className="absolute left-[205px] top-[182px] " src={LeftTopIcon} />
+        <img className="absolute left-[205px] bottom-[161px] " src={LeftBottomIcon} />
+        <img className="absolute right-[180px] top-[182px] " src={RightTopIcon} />
+        <img className="absolute right-[180px] bottom-[161px]" src={RightBottomIcon} />
       </div>
     </div>
   );
