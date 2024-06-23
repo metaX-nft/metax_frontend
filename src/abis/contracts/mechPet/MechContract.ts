@@ -33,7 +33,7 @@ const usePetId = () => {
     address: mechPetAddress,
     args: walletAddress ? [walletAddress] : undefined,
   });
-
+  console.log('data', data);
   return { id: data || BigInt(0), error };
 };
 

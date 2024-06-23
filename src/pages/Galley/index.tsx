@@ -9,6 +9,8 @@ import Store from './Store';
 import Pagination from './Pagination';
 import StoreDetailPage from './StoreDetailPage';
 import NextPageIcon from '@assets/images/galley-nextpage.svg';
+import ClaimPet0 from '@assets/images/claim_0.png';
+import ClaimPet1 from '@assets/images/claim_1.png';
 
 import ConnectorWallect from '@components/Connector';
 import { metaXTokenAddress } from '@abis/contracts/xToken/XTokenabi';
@@ -64,22 +66,23 @@ const FirstPage = memo(() => {
   if (petIdNumber <= 0) {
     return (
       <div className="w-full h-full flex flex-col justify-center">
-        <div className="flex justify-center">
+        <div className="flex justify-center gap-10">
           <Button
-            className="w-30 h-10 text-[24px]"
-            variant="text"
+            className="flex-col"
             onClick={() => handleClaimFreePet(0)}
             disabled={(hash && (isPending || !isSuccess)) || !isConnected}
           >
-            Claim Pet type 1
+            <img className="w-[300px] mb-8" src={ClaimPet0} />
+            <span className="text-2xl">Claim Pet type 1</span>
           </Button>
+
           <Button
-            className="w-30 h-10 text-[24px]"
-            variant="text"
+            className="flex-col"
             onClick={() => handleClaimFreePet(1)}
             disabled={(hash && (isPending || !isSuccess)) || !isConnected}
           >
-            Claim Pet type 2
+            <img className="w-[300px] mb-8" src={ClaimPet1} />
+            <span className="text-2xl ">Claim Pet type 2</span>
           </Button>
         </div>
         {!isConnected && (

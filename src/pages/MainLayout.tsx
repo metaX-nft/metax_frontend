@@ -14,7 +14,7 @@ const ContentLayout = () => {
     const twId = params.get('twId') || params.get('twid') || localTwId;
 
     if (twId) {
-      fetch(`${process.env.HTTPURL}/users/${twId}`, {
+      fetch(`${process.env.HTTPURL}/user/${twId}`, {
         method: 'GET',
         mode: 'cors',
         headers: {
