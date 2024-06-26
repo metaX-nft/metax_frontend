@@ -70,7 +70,7 @@ const FirstPage = memo(() => {
           <Button
             className="flex-col"
             onClick={() => handleClaimFreePet(0)}
-            disabled={(hash && (isPending || !isSuccess)) || !isConnected}
+            disabled={(hash && (isPending || !isSuccess)) || !isConnected || !petIdNumber}
           >
             <img className="w-[300px] mb-8" src={ClaimPet0} />
             <span className="text-2xl">Claim Pet type 1</span>
@@ -79,7 +79,7 @@ const FirstPage = memo(() => {
           <Button
             className="flex-col"
             onClick={() => handleClaimFreePet(1)}
-            disabled={(hash && (isPending || !isSuccess)) || !isConnected}
+            disabled={(hash && (isPending || !isSuccess)) || !isConnected || !petIdNumber}
           >
             <img className="w-[300px] mb-8" src={ClaimPet1} />
             <span className="text-2xl ">Claim Pet type 2</span>

@@ -2,8 +2,9 @@ import * as React from 'react';
 
 import GalleyTaskBg from '@assets/images/gallary-task-list.png';
 import TaskListIcon from '@assets/images/task-list-icon.svg';
-// import TaskItemImg from '@assets/images/task-item-img.svg';
-import TaskItemImg from '@assets/images/chainlink-icon.png';
+import LineabuildIcon from '@assets/images/lineabuild-icon.png';
+import HackquestIcon from '@assets/images/hackquest-icon.png';
+
 import { useGrowPet } from '@abis/contracts/mechPet/MechContract';
 import { Button } from '@mui/material';
 import { useAtom } from 'jotai';
@@ -70,22 +71,14 @@ const TaskItem = React.memo(
 const TaskList = React.memo(() => {
   const task = [
     {
-      icon: TaskItemImg,
-      title: 'Follow @chainlink on X',
-      accountId: '63727313',
-      url: 'https://twitter.com/chainlink',
+      icon: LineabuildIcon,
+      title: 'Follow @LineaBuild on X',
+      url: 'https://twitter.com/LineaBuild',
     },
     {
-      icon: TaskItemImg,
-      title: 'Subscribe Chainlink on YouTube',
-      accountId: '483472302',
-      url: 'https://www.youtube.com/channel/UCnjkrlqaWEBSnKZQ71gdyFA',
-    },
-    {
-      icon: TaskItemImg,
-      title: 'GM on ChainlinkDiscord',
-      accountId: '3274824',
-      url: 'https://discord.com/channels/592041321326182401/605768708266131456',
+      icon: HackquestIcon,
+      title: 'Follow @HackQuest_ on X',
+      url: 'https://twitter.com/HackQuest_',
     },
   ];
 
