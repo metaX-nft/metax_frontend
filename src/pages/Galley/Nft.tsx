@@ -80,7 +80,7 @@ const XContent = React.memo(() => {
   }, [freeFeedButtonActiveTime]);
 
   React.useEffect(() => {
-    if (hash && isSuccess && !isPending) {
+    if (hash && (isSuccess || !isPending)) {
       setFedPet(false);
     }
   }, [hash, isSuccess, isPending]);

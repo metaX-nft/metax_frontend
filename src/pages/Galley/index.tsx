@@ -18,11 +18,13 @@ import { useApprove } from '@abis/contracts/xToken/XTokenContract';
 import { usePetId, useClaimFreePet, mechPetAddress } from '@abis/contracts/mechPet/MechContract';
 import { BigNumber } from '@ethersproject/bignumber';
 import globalStore from '@states/global';
+import { fedPet } from '@states/index';
 
 export const activePageAtom = atom('1');
 
 const FirstPage = memo(() => {
   const [_, setActivePage] = useAtom(activePageAtom);
+  const [isFedPet, setFedPet] = useAtom(fedPet);
   const [petIdNumber, setPetIdNumber] = useState(0);
   const { user, updateUser } = globalStore(state => {
     return { user: state.user, updateUser: state.updateUser };
@@ -70,7 +72,7 @@ const FirstPage = memo(() => {
           <Button
             className="flex-col"
             onClick={() => handleClaimFreePet(0)}
-            disabled={(hash && (isPending || !isSuccess)) || !isConnected || !petIdNumber}
+            disabled={(hash && (isPending || !isSuccess)) || !isConnected}
           >
             <img className="w-[300px] mb-8" src={ClaimPet0} />
             <span className="text-2xl">Claim Pet type 1</span>
@@ -79,7 +81,7 @@ const FirstPage = memo(() => {
           <Button
             className="flex-col"
             onClick={() => handleClaimFreePet(1)}
-            disabled={(hash && (isPending || !isSuccess)) || !isConnected || !petIdNumber}
+            disabled={(hash && (isPending || !isSuccess)) || !isConnected}
           >
             <img className="w-[300px] mb-8" src={ClaimPet1} />
             <span className="text-2xl ">Claim Pet type 2</span>
